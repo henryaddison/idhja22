@@ -1,14 +1,35 @@
 require 'spec_helper'
 
 describe Idhja22::Dataset do
-  describe 'from_csv' do
-    it 'should extract labels' do
-      ds = Idhja22::Dataset.from_csv(File.join(File.dirname(__FILE__),'spec_data.csv'))
-      ds.attribute_labels.should == ['Weather', 'Temperature', 'Wind']
-      ds.category_label.should == 'Plays'
+  context 'initialization' do
+    
+    def check_labels(obj, exp_attr_labels, exp_cat_label)
+      obj.attribute_labels.should == exp_attr_labels
+      obj.category_label.should == exp_cat_label
     end
 
-    it 'should extract data' do
+    describe 'from_csv' do
+      before(:all) do
+        @ds = Idhja22::Dataset.from_csv(File.join(File.dirname(__FILE__),'spec_data.csv'))
+      end
+
+      it 'should extract labels' do
+        check_labels(@ds, ['Weather', 'Temperature', 'Wind'], 'Plays')
+      end
+
+      it 'should extract data' do
+
+      end
+    end
+
+    describe 'new' do
+      before(:all) do
+        @ds = Idhja22::Dataset.new([['Confidence', 'Age group', 'Weight', 'Loves Brand'],['high', '20-30', 'Tubby', 'Y']])
+      end
+      
+      it 'should extract labels' do
+        check_labels(@ds, ['Confidence', 'Age group', 'Weight'], 'Loves Brand')
+      end
 
     end
   end
