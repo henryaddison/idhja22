@@ -26,7 +26,7 @@ describe Idhja22::Dataset do
 
     describe 'new' do
       before(:all) do
-        @ds = Idhja22::Dataset.new([['Confidence', 'Age group', 'Weight', 'Loves Brand'],['high', '20-30', 'Tubby', 'Y']])
+        @ds = Idhja22::Dataset.new([Idhja22::Dataset::Datum.new(['high', '20-30', 'Tubby', 'Y'])], ['Confidence', 'Age group', 'Weight'], 'Loves Brand')
       end
       
       it 'should extract labels' do
@@ -38,7 +38,48 @@ describe Idhja22::Dataset do
         @ds.data.first.attributes.should == ['high', '20-30', 'Tubby']
         @ds.data.first.category.should == 'Y'
       end
+    end
 
+
+    context 'ready made' do
+      before(:all) do
+        @ds = Idhja22::Dataset.from_csv(File.join(File.dirname(__FILE__),'large_spec_data.csv'))
+      end
+
+      describe 'split' do
+        it 'should split the data set based on the values of an given attribute index' do
+          new_sets = @ds.split(0)
+          new_sets.length.should == 2
+          new_sets.each do |dset|
+            dset.data.collect { |d| d.attributes[0] }.uniq.length.should == 1
+          end
+        end
+
+        it 'should preserve the data other than splitting it' do
+          new_sets = @ds.split(3)
+          new_sets.length.should == 3
+          new_sets[0].attribute_labels.should == @ds.attribute_labels
+          new_sets[0].category_label.should == @ds.category_label
+          new_sets[0].data.collect(&:to_a).should == [%w{a a a a a Y}, %w{b a a a a Y}]
+        end
+
+
+        it 'should produce one item when the values are all the same' do
+          @ds.split(4).length.should == 1
+        end
+      end
+
+      describe 'category_counts' do
+        it 'should count the number of entries in each category' do
+          @ds.category_counts.should == {'Y' => 3, '~' => 1, 'N' => 1}
+        end
+      end
+
+      describe 'entropy' do
+        it 'should calculate entropy of set' do
+          @ds.entropy.should be_within(0.0001).of(1.3709506)
+        end
+      end
     end
   end
 end
