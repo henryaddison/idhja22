@@ -1,5 +1,5 @@
-class IDhja22
-  def self.hi
-    puts "Hello"
-  end
+require "idhja22/version"
+
+module Idhja22
+  # Your code goes here...
 end

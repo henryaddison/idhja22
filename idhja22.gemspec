@@ -1,10 +1,19 @@
-Gem::Specification.new do |s|
-  s.name        = 'idhja22'
-  s.version     = '0.0.0'
-  s.date        = '2012-11-23'
-  s.summary     = "Decision tree"
-  s.description = "A take on decision trees"
-  s.authors     = ["Henry Addison"]
-  s.homepage    = 'https://github.com/henryaddison/idhja22'
-  s.files       = ["lib/idhja22.rb"]
+# -*- encoding: utf-8 -*-
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'idhja22/version'
+
+Gem::Specification.new do |gem|
+  gem.name          = "idhja22"
+  gem.version       = Idhja22::VERSION
+  gem.authors       = ["Henry Addison"]
+  gem.email         = ["henry@dressipi.com"]
+  gem.description   = %q{TODO: Write a gem description}
+  gem.summary       = %q{TODO: Write a gem summary}
+  gem.homepage      = ""
+
+  gem.files         = `git ls-files`.split($/)
+  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  gem.require_paths = ["lib"]
 end
