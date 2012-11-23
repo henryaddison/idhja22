@@ -18,7 +18,9 @@ describe Idhja22::Dataset do
       end
 
       it 'should extract data' do
-
+        @ds.data.length.should == 3
+        @ds.data.collect(&:attributes).should == [['sunny', 'hot', 'light'], ['sunny', 'cold', 'medium'], ['raining', 'cold', 'high']]
+        @ds.data.collect(&:category).should == ['Y','~','N']
       end
     end
 
@@ -29,6 +31,12 @@ describe Idhja22::Dataset do
       
       it 'should extract labels' do
         check_labels(@ds, ['Confidence', 'Age group', 'Weight'], 'Loves Brand')
+      end
+
+      it 'should extract data' do
+        @ds.data.length.should == 1
+        @ds.data.first.attributes.should == ['high', '20-30', 'Tubby']
+        @ds.data.first.category.should == 'Y'
       end
 
     end
