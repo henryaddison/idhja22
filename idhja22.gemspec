@@ -7,10 +7,9 @@ Gem::Specification.new do |gem|
   gem.name          = "idhja22"
   gem.version       = Idhja22::VERSION
   gem.authors       = ["Henry Addison"]
-  gem.email         = ["henry@dressipi.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Decision Trees}
+  gem.summary       = %q{A different take on decision trees}
+  gem.homepage      = "https://github.com/henryaddison/idhja22"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
