@@ -19,3 +19,6 @@ doc/
 
 # RVM
 .rvmrc
+
+#bundler artifacts
+Gemfile.lock
