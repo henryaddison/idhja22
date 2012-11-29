@@ -1,5 +1,6 @@
 module Idhja22
   class Tree
+    attr_reader :root
     class << self
       def train(dataset)
         new(dataset, dataset.attribute_labels)
