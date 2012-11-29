@@ -13,7 +13,7 @@ module Idhja22
       end
 
       #if successful termination - create and return a leaf node
-      if(dataset.data.collect(:category).uniq.length == 1)
+      if(dataset.data.collect(&:category).uniq.length == 1)
         @root = Idhja22::LeafNode.new(dataset.data.first.category)
         return
       end
@@ -27,7 +27,7 @@ module Idhja22
       igain = - Float::INFINITY
 
       attributes_available.each do |attr|
-        possible_split = dataset.split(dataset.index_of(attr))
+        possible_split = dataset.split(dataset.attribute_labels.index(attr))
         possible_igain = dataset.entropy
         possible_split.each do |value, ds|
           possible_igain -= (ds.size.to_f/dataset.size.to_f)*ds.entropy
