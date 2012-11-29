@@ -40,7 +40,6 @@ describe Idhja22::Dataset do
       end
     end
 
-
     context 'ready made' do
       before(:all) do
         @ds = Idhja22::Dataset.from_csv(File.join(File.dirname(__FILE__),'large_spec_data.csv'))
@@ -79,6 +78,18 @@ describe Idhja22::Dataset do
         it 'should calculate entropy of set' do
           @ds.entropy.should be_within(0.0001).of(1.3709506)
         end
+      end
+
+      describe 'size' do
+        it 'should calculate size of dataset' do
+          @ds.size.should == 5
+        end 
+      end
+
+      describe 'empty?' do
+        it 'should calculate size of dataset' do
+          @ds.empty?.should be_false
+        end 
       end
     end
   end

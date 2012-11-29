@@ -63,5 +63,13 @@ module Idhja22
       end
       return counts
     end
+
+    def size
+      return data.size
+    end
+
+    def empty?
+      return data.empty?
+    end
   end
 end
