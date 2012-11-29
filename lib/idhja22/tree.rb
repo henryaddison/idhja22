@@ -45,11 +45,20 @@ module Idhja22
     private
     
     def terminating?(dataset)
-      if dataset.data.collect(&:category).uniq.length == 1
-        return dataset.data.first.category
-      else
-        return false
+      category_count = dataset.category_counts
+      if category_count.size == 1
+        return category_count.values.first
       end
+
+      certain_categories = category_count.values - ['~']
+      if(certain_categories.size == 1)
+        certain_prop = category_count[certain_categories.first].to_f/(category_count[certain_categories.first] + category_count['~'])
+        if certain_prop > 0.75
+          return certain_categories.first
+        end
+      end
+
+      return false
     end
   end
 end
