@@ -47,10 +47,10 @@ module Idhja22
     def terminating?(dataset)
       category_count = dataset.category_counts
       if category_count.size == 1
-        return category_count.values.first
+        return category_count.keys.first
       end
 
-      certain_categories = category_count.values - ['~']
+      certain_categories = category_count.keys - ['~']
       if(certain_categories.size == 1)
         certain_prop = category_count[certain_categories.first].to_f/(category_count[certain_categories.first] + category_count['~'])
         if certain_prop > 0.75
