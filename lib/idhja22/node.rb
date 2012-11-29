@@ -9,7 +9,8 @@ module Idhja22
       @decision_attribute = decision_attribute
       @branches = {}
       data_split.each do |value, dataset|
-        @branches[value] = Tree.new(dataset, attributes_available)
+        node = Tree.build_node(dataset, attributes_available)
+        @branches[value] = node if node && !(node.is_a?(LeafNode) && node.label == '~') && !(node.is_a?(DecisionNode) && node.branches.empty?)
       end
     end
   end

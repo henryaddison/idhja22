@@ -71,5 +71,23 @@ module Idhja22
     def empty?
       return data.empty?
     end
+
+    def terminating?
+      cc = category_counts
+      if cc.size == 1
+        return cc.keys.first
+      end
+
+      certain_categories = cc.keys - ['~']
+      if(certain_categories.size == 1)
+        certain_prop = cc[certain_categories.first].to_f/(cc[certain_categories.first] + cc['~'])
+        if certain_prop > 0.3
+          return certain_categories.first
+        end
+      end
+
+      return false
+    end
+
   end
 end
