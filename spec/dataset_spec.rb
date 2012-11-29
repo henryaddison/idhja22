@@ -50,17 +50,17 @@ describe Idhja22::Dataset do
         it 'should split the data set based on the values of an given attribute index' do
           new_sets = @ds.split(0)
           new_sets.length.should == 2
-          new_sets.each do |dset|
-            dset.data.collect { |d| d.attributes[0] }.uniq.length.should == 1
+          new_sets.each do |value, dset|
+            dset.data.collect { |d| d.attributes[0] }.uniq.should == [value]
           end
         end
 
         it 'should preserve the data other than splitting it' do
           new_sets = @ds.split(3)
           new_sets.length.should == 3
-          new_sets[0].attribute_labels.should == @ds.attribute_labels
-          new_sets[0].category_label.should == @ds.category_label
-          new_sets[0].data.collect(&:to_a).should == [%w{a a a a a Y}, %w{b a a a a Y}]
+          new_sets['a'].attribute_labels.should == @ds.attribute_labels
+          new_sets['a'].category_label.should == @ds.category_label
+          new_sets['a'].data.collect(&:to_a).should == [%w{a a a a a Y}, %w{b a a a a Y}]
         end
 
 

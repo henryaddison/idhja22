@@ -43,9 +43,11 @@ module Idhja22
       data.each do |datum|
         groups[datum.attributes[attr_index]] += [datum]
       end
-      groups.collect do |value, data|
-        Dataset.new(data, attribute_labels, category_label)
+      output = Hash.new
+      groups.each do |value, data|
+        output[value] = Dataset.new(data, attribute_labels, category_label)
       end
+      return output
     end
 
     def entropy
