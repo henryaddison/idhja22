@@ -14,8 +14,8 @@ module Idhja22
       end
 
       #if successful termination - create and return a leaf node
-      if(dataset.data.collect(&:category).uniq.length == 1)
-        @root = Idhja22::LeafNode.new(dataset.data.first.category)
+      if(category = terminating?(dataset))
+        @root = Idhja22::LeafNode.new(category)
         return
       end
 
@@ -40,6 +40,16 @@ module Idhja22
         end
       end
       @root = Idhja22::DecisionNode.new(data_split, best_attribute, attributes_available-[best_attribute])
+    end
+
+    private
+    
+    def terminating?(dataset)
+      if dataset.data.collect(&:category).uniq.length == 1
+        return dataset.data.first.category
+      else
+        return false
+      end
     end
   end
 end
