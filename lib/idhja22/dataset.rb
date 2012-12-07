@@ -72,6 +72,25 @@ module Idhja22
       return data.empty?
     end
 
+    def best_guess
+      cc = category_counts
+      best_guesses = []
+      count = -Float::INFINITY
+      cc.each do |cat, value|
+        if value > count
+          count = value
+          best_guesses = [cat]
+        elsif value == count
+          best_guesses << cat
+        end
+      end
+      if best_guesses.length == 1
+        return best_guesses.first
+      else
+        return nil
+      end
+    end
+
     def terminating?
       cc = category_counts
       if cc.size == 1
