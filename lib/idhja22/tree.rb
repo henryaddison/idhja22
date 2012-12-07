@@ -7,7 +7,7 @@ module Idhja22
       end
 
       def build_node(dataset, attributes_available)
-        if(dataset.empty?)
+        if(dataset.size < 10)
           return nil
         end
 
@@ -17,6 +17,8 @@ module Idhja22
         end
 
         if(attributes_available.empty?)
+          #best guess
+
           return nil
         end
 
