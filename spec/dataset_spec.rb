@@ -20,7 +20,7 @@ describe Idhja22::Dataset do
       it 'should extract data' do
         @ds.data.length.should == 3
         @ds.data.collect(&:attributes).should == [['sunny', 'hot', 'light'], ['sunny', 'cold', 'medium'], ['raining', 'cold', 'high']]
-        @ds.data.collect(&:category).should == ['Y','~','N']
+        @ds.data.collect(&:category).should == ['Y', 'Y','N']
       end
     end
 
@@ -70,13 +70,13 @@ describe Idhja22::Dataset do
 
       describe 'category_counts' do
         it 'should count the number of entries in each category' do
-          @ds.category_counts.should == {'Y' => 3, '~' => 1, 'N' => 1}
+          @ds.category_counts.should == {'Y' => 3, 'N' => 2}
         end
       end
 
       describe 'entropy' do
         it 'should calculate entropy of set' do
-          @ds.entropy.should be_within(0.0001).of(1.3709506)
+          @ds.entropy.should be_within(0.000001).of(0.970951)
         end
       end
 
@@ -90,6 +90,12 @@ describe Idhja22::Dataset do
         it 'should calculate size of dataset' do
           @ds.empty?.should be_false
         end 
+      end
+
+      describe 'probability' do
+        it 'should return probabilty category is Y' do
+          @ds.probability.should be_within(0.0001).of(0.6)
+        end
       end
     end
   end
