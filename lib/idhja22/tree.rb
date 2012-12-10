@@ -12,16 +12,21 @@ module Idhja22
         end
 
         #if successful termination - create and return a leaf node
-        if(category = dataset.terminating?)
-          return Idhja22::LeafNode.new(category)
+        if(dataset.terminating?)
+          return Idhja22::LeafNode.new(dataset.probability)
         end
 
         if(attributes_available.empty?)
-          #best guess
-
-          return nil
+          return Idhja22::LeafNode.new(dataset.probability)
         end
 
+        data_split , best_attribute = best_attribute(dataset, attributes_available)
+
+        return Idhja22::DecisionNode.new(data_split, best_attribute, attributes_available-[best_attribute])
+      end
+
+      private
+      def best_attribute(dataset, attributes_available)
         data_split = best_attribute = nil
         igain = - Float::INFINITY
 
@@ -37,7 +42,7 @@ module Idhja22
             best_attribute = attr
           end
         end
-        return Idhja22::DecisionNode.new(data_split, best_attribute, attributes_available-[best_attribute])
+        return data_split, best_attribute
       end
     end
 
