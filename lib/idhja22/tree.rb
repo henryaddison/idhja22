@@ -16,6 +16,7 @@ module Idhja22
           return Idhja22::LeafNode.new(dataset.probability)
         end
 
+        #if we have no more attributes left to split the dataset on, then return a leafnode
         if(attributes_available.empty?)
           return Idhja22::LeafNode.new(dataset.probability)
         end
