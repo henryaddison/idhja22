@@ -50,5 +50,12 @@ module Idhja22
       @root = self.class.build_node(dataset, attributes_available)
     end
 
+    def get_rules
+      output = "if "
+      rules = root.get_rules
+      "if " + rules.join("\nelsif ")
+    end
+
+    
   end
 end
