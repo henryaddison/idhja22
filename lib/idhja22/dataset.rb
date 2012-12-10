@@ -7,6 +7,7 @@ module Idhja22
       attr_reader :category, :attributes
       def initialize(row)
         @category = row.pop
+        raise "Unrecognised category: #{@category}" unless ['Y', 'N'].include?(@category)
         @attributes = row
       end
 
