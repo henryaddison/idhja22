@@ -78,7 +78,7 @@ module Idhja22
     end
 
     def terminating?
-      category_counts.keys.length == 1
+      probability > 0.95 || probability < 0.05
     end
 
   end
