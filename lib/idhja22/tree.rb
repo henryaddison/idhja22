@@ -67,7 +67,6 @@ module Idhja22
     end
 
     def get_rules
-      output = "if "
       rules = root.get_rules
       "if " + rules.join("\nelsif ")
     end
