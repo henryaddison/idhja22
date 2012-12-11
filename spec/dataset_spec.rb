@@ -59,7 +59,7 @@ describe Idhja22::Dataset do
           new_sets.length.should == 3
           new_sets['a'].attribute_labels.should == @ds.attribute_labels
           new_sets['a'].category_label.should == @ds.category_label
-          new_sets['a'].data.collect(&:to_a).should == [%w{a a a a a Y}, %w{b a a a a Y}]
+          new_sets['a'].data.collect(&:to_a).should == [%w{a a a a a Y}, %w{b a a a a Y}, %w{a a a a a Y}, %w{a a a a a Y}, %w{a a a a a Y}, %w{a a a a a Y}, %w{a a a a a Y}]
         end
 
 
@@ -70,19 +70,19 @@ describe Idhja22::Dataset do
 
       describe 'category_counts' do
         it 'should count the number of entries in each category' do
-          @ds.category_counts.should == {'Y' => 3, 'N' => 2}
+          @ds.category_counts.should == {'Y' => 8, 'N' => 2}
         end
       end
 
       describe 'entropy' do
         it 'should calculate entropy of set' do
-          @ds.entropy.should be_within(0.000001).of(0.970951)
+          @ds.entropy.should be_within(0.000001).of(0.721928)
         end
       end
 
       describe 'size' do
         it 'should calculate size of dataset' do
-          @ds.size.should == 5
+          @ds.size.should == 10
         end 
       end
 
@@ -94,7 +94,7 @@ describe Idhja22::Dataset do
 
       describe 'probability' do
         it 'should return probabilty category is Y' do
-          @ds.probability.should be_within(0.0001).of(0.6)
+          @ds.probability.should be_within(0.0001).of(0.8)
         end
       end
     end
