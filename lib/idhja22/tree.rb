@@ -6,9 +6,13 @@ module Idhja22
         new(dataset, dataset.attribute_labels)
       end
 
-      def build_node(dataset, attributes_available)
+      def build_node(dataset, attributes_available, parent_probability = nil)
         if(dataset.size < 10)
-          return nil
+          if(parent_probability)
+            return Idhja22::LeafNode.new(parent_probability)
+          else
+            return nil
+          end
         end
 
         #if successful termination - create and return a leaf node
@@ -23,7 +27,13 @@ module Idhja22
 
         data_split , best_attribute = best_attribute(dataset, attributes_available)
 
-        return Idhja22::DecisionNode.new(data_split, best_attribute, attributes_available-[best_attribute])
+        node = Idhja22::DecisionNode.new(data_split, best_attribute, attributes_available-[best_attribute], dataset.probability)
+        #could be that although there's attributes left to split on, we don't get anything useful out, in which case ignore the split and terminate the tree
+        if node.branches.empty?
+          return Idhja22::LeafNode.new(dataset.probability)
+        end
+
+        return node
       end
 
       private
