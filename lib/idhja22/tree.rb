@@ -6,6 +6,11 @@ module Idhja22
         new(dataset, dataset.attribute_labels)
       end
 
+      def train_from_csv(filename)
+        ds = Dataset.from_csv(filename)
+        train(ds)
+      end
+
       def build_node(dataset, attributes_available, parent_probability = nil)
         if(dataset.size < 10)
           if(parent_probability)
