@@ -25,6 +25,7 @@ Simplest usage is to have a CSV of training data. The final column is treated as
     > tree = Idhja22::Tree.train_from_csv('/path/to/data.csv')
 
 To print out the rules produced by the tree:
+
     > puts tree.get_rules
 
 ## Contributing
