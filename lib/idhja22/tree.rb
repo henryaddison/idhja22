@@ -27,7 +27,7 @@ module Idhja22
 
         #if we have no more attributes left to split the dataset on, then return a leafnode
         if(attributes_available.empty?)
-          return Idhja22::LeafNode.new(dataset.probability, dataset.category_label, dataset.category_label)
+          return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
         end
 
         data_split , best_attribute = best_attribute(dataset, attributes_available)

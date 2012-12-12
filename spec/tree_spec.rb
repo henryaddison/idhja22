@@ -14,7 +14,7 @@ describe Idhja22::Tree do
 
   describe('#get_rules') do
     it 'should list the rules of the tree' do
-      Idhja22::Tree.train(@ds).get_rules.should == "if 2 == a and then chance of C = 0.8\nelsif 2 == b and then chance of C = 0.8"
+      Idhja22::Tree.train(@ds).get_rules.should == "if 2 == a and 4 == a and then chance of C = 1.0\nelsif 2 == a and 4 == b and then chance of C = 0.0\nelsif 2 == b and then chance of C = 0.0"
     end
   end
 end

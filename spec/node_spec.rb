@@ -25,7 +25,7 @@ describe Idhja22::DecisionNode do
   describe('#get_rules') do
     it 'should return a list of rules' do
       l = Idhja22::DecisionNode.new(@ds.split(2), '3', [], 0.75)
-      l.get_rules.should == ["3 == a and then chance of C = 0.75", "3 == b and then chance of C = 0.75"]
+      l.get_rules.should == ["3 == a and then chance of C = 0.75", "3 == b and then chance of C = 0.0"]
     end
   end
 end
