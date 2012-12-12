@@ -82,7 +82,7 @@ describe Idhja22::Dataset do
         end
       end
 
-      describe 'entropy' do
+      describe '#entropy' do
         it 'should calculate entropy of set' do
           @ds.entropy.should be_within(0.000001).of(0.970951)
         end
@@ -96,19 +96,19 @@ describe Idhja22::Dataset do
 
       end
 
-      describe 'size' do
+      describe '#size' do
         it 'should calculate size of dataset' do
           @ds.size.should == 10
         end 
       end
 
-      describe 'empty?' do
+      describe '#empty?' do
         it 'should calculate size of dataset' do
           @ds.empty?.should be_false
         end 
       end
 
-      describe 'probability' do
+      describe '#probability' do
         it 'should return probabilty category is Y' do
           @ds.probability.should be_within(0.0001).of(0.6)
         end
