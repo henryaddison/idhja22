@@ -1,9 +1,15 @@
+require "idhja22/dataset/errors"
+require "idhja22/dataset/tree_methods"
+require "idhja22/dataset/datum"
 require 'csv'
+
 module Idhja22
   class Dataset
     attr_reader :category_label, :attribute_labels, :data
-    class BadData < ArgumentError; end
-    class NonUniqueAttributeLabels < BadData; end
+    
+
+    include Idhja22::Dataset::TreeMethods
+
     class << self
       def from_csv(filename)
         csv = CSV.read(filename)
@@ -28,24 +34,6 @@ module Idhja22
       @data = data
     end
 
-    def split(attr_index)
-      groups = Hash.new([])
-      data.each do |datum|
-        groups[datum.attributes[attr_index]] += [datum]
-      end
-      output = Hash.new
-      groups.each do |value, data|
-        output[value] = Dataset.new(data, attribute_labels, category_label)
-      end
-      return output
-    end
-
-    def entropy
-      total = data.length
-      entropy = 0
-      category_counts.values.inject(0) { |ent, count|  prop = count.to_f/total.to_f; ent-prop*Math.log(prop,2)  }
-    end
-
     def category_counts
       counts = Hash.new(0)
       data.each do |d|
@@ -64,10 +52,6 @@ module Idhja22
 
     def probability
       category_counts['Y'].to_f/size.to_f
-    end
-
-    def terminating?
-      probability > 0.95 || probability < 0.05
     end
 
   end

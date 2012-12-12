@@ -2,8 +2,6 @@ module Idhja22
   class Dataset
     class Datum
       attr_reader :category, :attributes, :category_label, :attribute_labels
-      class UnknownAttribute < BadData; end
-      class UnknownCategory < BadData; end
 
       def initialize(row, attr_labels, category_label)
         @category_label = category_label
