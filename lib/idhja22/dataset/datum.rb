@@ -1,28 +1,44 @@
 module Idhja22
   class Dataset
     class Datum
-      attr_reader :category, :attributes, :category_label, :attribute_labels
+      attr_accessor :attributes, :category_label, :attribute_labels 
 
       def initialize(row, attr_labels, category_label)
-        @category_label = category_label
+        self.category_label = category_label
         raise NonUniqueAttributeLabels, "repeated attributes in #{attr_labels}" unless attr_labels == attr_labels.uniq
-        @attribute_labels = attr_labels
-        @category = row.pop
-        raise UnknownCategory, "Unrecognised category: #{@category} - should be Y or N" unless ['Y', 'N'].include?(@category)
-        @attributes = row
+        self.attribute_labels = attr_labels
+        self.attributes = row
       end
 
       def to_a
-        attributes+[category]
+        attributes
       end
 
       def [](attr_label)
         if index = @attribute_labels.index(attr_label)
-          @attributes[index]
+          self.attributes[index]
         else
-          raise UnknownAttribute, "unknown attribute label #{attr_label} in labels #{@attribute_labels.join(', ')}"
+          raise UnknownAttributeLabel, "unknown attribute label #{attr_label} in labels #{@attribute_labels.join(', ')}"
         end
       end
+    end
+
+    class Example < Datum
+      attr_accessor :category
+
+      def initialize(row, attr_labels, category_label)
+        super
+        self.category = self.attributes.pop
+        raise UnknownCategoryValue, "Unrecognised category: #{@category} - should be Y or N" unless ['Y', 'N'].include?(@category)
+      end
+
+      def to_a
+        super+[category]
+      end
+    end
+
+    class Query < Datum
+
     end
   end
 end

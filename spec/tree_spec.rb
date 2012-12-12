@@ -43,4 +43,12 @@ describe Idhja22::Tree do
       tree.should == csv_tree
     end
   end
+
+  describe('#evaluate') do
+    it 'should return the probabilty at the leaf of the tree' do
+      tree = Idhja22::Tree.train(@ds)
+      query = Idhja22::Dataset::Query.new(['z','z','a','z','a'],['0', '1','2','3','4'],'C')
+      tree.evaluate(query).should == 1.0
+    end
+  end
 end

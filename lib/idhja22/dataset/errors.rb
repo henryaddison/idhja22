@@ -4,8 +4,10 @@ module Idhja22
     class InsufficientData < BadData; end
     class NonUniqueAttributeLabels < BadData; end
     class Datum
-      class UnknownAttribute < BadData; end
-      class UnknownCategory < BadData; end
+      class UnknownAttributeLabel < BadData; end
+      class UnknownAttributeValue < BadData; end
+      class UnknownCategoryLabel < BadData; end
+      class UnknownCategoryValue < BadData; end
     end
   end
 end

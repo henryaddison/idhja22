@@ -19,7 +19,7 @@ module Idhja22
 
         data = []
         csv.each do |row|
-          data << Datum.new(row, attribute_labels, category_label)
+          data << Example.new(row, attribute_labels, category_label)
         end
 
         new(data, attribute_labels, category_label)

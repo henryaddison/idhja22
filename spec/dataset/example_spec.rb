@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Idhja22::Dataset::Datum do
+describe Idhja22::Dataset::Example do
   before(:all) do
-    @datum = Idhja22::Dataset::Datum.new(['high', '20-30', 'tubby','Y'], ['confidence', 'age', 'weight'], 'likes')
+    @datum = Idhja22::Dataset::Example.new(['high', '20-30', 'tubby','Y'], ['confidence', 'age', 'weight'], 'likes')
   end
   
   describe 'new' do
@@ -19,7 +19,7 @@ describe Idhja22::Dataset::Datum do
     context 'with non-unique attribute labels' do
       it 'should throw an exception' do
         expect do
-          Idhja22::Dataset::Datum.new(['high', '20-30', 'tubby','Y'], ['confidence', 'age', 'age'], 'likes')
+          Idhja22::Dataset::Example.new(['high', '20-30', 'tubby','Y'], ['confidence', 'age', 'age'], 'likes')
         end.to raise_error(Idhja22::Dataset::NonUniqueAttributeLabels)
       end
     end
@@ -27,8 +27,8 @@ describe Idhja22::Dataset::Datum do
     context 'unexpected label' do
       it 'should raise an exception' do
         expect do
-          Idhja22::Dataset::Datum.new(['high', '20-30', 'tubby','H'], ['confidence', 'age', 'weight'], 'likes')
-        end.to raise_error(Idhja22::Dataset::Datum::UnknownCategory)
+          Idhja22::Dataset::Example.new(['high', '20-30', 'tubby','H'], ['confidence', 'age', 'weight'], 'likes')
+        end.to raise_error(Idhja22::Dataset::Example::UnknownCategoryValue)
       end
     end
   end
@@ -50,7 +50,7 @@ describe Idhja22::Dataset::Datum do
       it 'should throw an exception' do
         expect do
           @datum['madeup']
-        end.to raise_error(Idhja22::Dataset::Datum::UnknownAttribute)
+        end.to raise_error(Idhja22::Dataset::Datum::UnknownAttributeLabel)
       end
     end
 

@@ -28,12 +28,19 @@ describe Idhja22::LeafNode do
     end
   end
 
-  describe 'eval' do
+  describe 'evaluate' do
     let(:leaf) { Idhja22::LeafNode.new(0.6, 'pudding') }
-    let(:datum) {}
 
     it 'should return probability' do
-      leaf.eval(datum).should == 0.6
+      query = Idhja22::Dataset::Query.new(['high', 'gusty'], ['temperature', 'windy'], 'pudding')
+      leaf.evaluate(query).should == 0.6
+    end
+
+    context 'mismatching category labels' do
+      it 'should raise error' do
+        query = Idhja22::Dataset::Query.new(['high', 'gusty'], ['temperature', 'windy'], 'tennis')
+        expect {leaf.evaluate(query)}.to raise_error(Idhja22::Dataset::Datum::UnknownCategoryLabel)
+      end
     end
   end
 end
@@ -60,6 +67,31 @@ describe Idhja22::DecisionNode do
       dn1.should == dn2
       dn1.should_not == diff_dn1
       dn1.should_not == diff_dn2
+    end
+  end
+
+  describe 'evaluate' do
+    let(:dn) { Idhja22::DecisionNode.new(@ds.split(2), '3', [], 0.75) }
+    it 'should follow node to probability' do
+      query = Idhja22::Dataset::Query.new(['a', 'a'], ['3', '4'], 'C')
+      dn.evaluate(query).should == 0.75
+
+      query = Idhja22::Dataset::Query.new(['b', 'a'], ['3', '4'], 'C')
+      dn.evaluate(query).should == 0.0
+    end
+
+    context 'mismatching attribute label' do
+      it 'should raise an error' do
+        query = Idhja22::Dataset::Query.new(['b', 'a'], ['1', '2'], 'C')
+        expect {dn.evaluate(query)}.to raise_error(Idhja22::Dataset::Datum::UnknownAttributeLabel)
+      end
+    end
+
+    context 'unknown attribute value' do
+      it 'should raise an error' do
+        query = Idhja22::Dataset::Query.new(['c', 'a'], ['3', '4'], 'C')
+        expect {dn.evaluate(query)}.to raise_error(Idhja22::Dataset::Datum::UnknownAttributeValue)
+      end
     end
   end
 end

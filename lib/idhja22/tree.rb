@@ -68,8 +68,8 @@ module Idhja22
       return self.root == other.root
     end
 
-    def eval datum
-
+    def evaluate query
+      @root.evaluate(query)
     end
   end
 end

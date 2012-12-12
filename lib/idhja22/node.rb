@@ -39,6 +39,13 @@ module Idhja22
       end
       return true
     end
+
+    def evaluate(query)
+      queried_value = query[self.decision_attribute]
+      branch = self.branches[queried_value]
+      raise Idhja22::Dataset::Datum::UnknownAttributeValue, "when looking at attribute labelled #{self.decision_attribute} could not find branch for value #{queried_value}" if branch.nil?
+      branch.evaluate(query)
+    end
   end
 
   class LeafNode < Node
@@ -56,7 +63,8 @@ module Idhja22
       return super && self.probability == other.probability && self.category_label == other.category_label
     end
 
-    def eval(datum)
+    def evaluate(query)
+      raise Idhja22::Dataset::Datum::UnknownCategoryLabel, "expected category label for query is #{query.category_label} but node is using #{self.category_label}" unless query.category_label == self.category_label
       return probability
     end
   end

@@ -26,7 +26,7 @@ describe Idhja22::Dataset do
 
     describe 'new' do
       before(:all) do
-        @ds = Idhja22::Dataset.new([Idhja22::Dataset::Datum.new(['high', '20-30', 'Tubby', 'Y'], ['Confidence', 'Age group', 'Weight'] , 'Loves Brand')], ['Confidence', 'Age group', 'Weight'], 'Loves Brand')
+        @ds = Idhja22::Dataset.new([Idhja22::Dataset::Example.new(['high', '20-30', 'Tubby', 'Y'], ['Confidence', 'Age group', 'Weight'] , 'Loves Brand')], ['Confidence', 'Age group', 'Weight'], 'Loves Brand')
       end
       
       it 'should extract labels' do
@@ -42,7 +42,7 @@ describe Idhja22::Dataset do
       context 'with repeated attribute labels' do
         it 'should throw an error' do
           expect do 
-            Idhja22::Dataset.new([Idhja22::Dataset::Datum.new(['high', '20-30', 'Tubby', 'Y'], ['Confidence', 'Age group', 'Confidence'] , 'Loves Brand')], ['Confidence', 'Age group', 'Confidence'], 'Loves Brand')
+            Idhja22::Dataset.new([Idhja22::Dataset::Example.new(['high', '20-30', 'Tubby', 'Y'], ['Confidence', 'Age group', 'Confidence'] , 'Loves Brand')], ['Confidence', 'Age group', 'Confidence'], 'Loves Brand')
           end.to raise_error(Idhja22::Dataset::NonUniqueAttributeLabels)
         end
       end
