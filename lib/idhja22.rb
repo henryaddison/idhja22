@@ -1,5 +1,6 @@
 require "idhja22/version"
 require "idhja22/dataset"
+require "idhja22/dataset/datum"
 require "idhja22/tree"
 require "idhja22/node"
 
