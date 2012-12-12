@@ -4,5 +4,6 @@ require "idhja22/tree"
 require "idhja22/node"
 
 module Idhja22
-  # Your code goes here...
+  TERMINATION_PROBABILITY = 0.95
+  MIN_DATASET_SIZE = 10
 end

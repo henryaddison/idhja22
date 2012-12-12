@@ -20,7 +20,7 @@ module Idhja22
       end
       
       def terminating?
-        probability > 0.95 || probability < 0.05
+        probability > Idhja22::TERMINATION_PROBABILITY || probability < 1-Idhja22::TERMINATION_PROBABILITY
       end
     end
   end
