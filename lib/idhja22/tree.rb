@@ -11,9 +11,9 @@ module Idhja22
         train(ds)
       end
 
-      def build_node(dataset, attributes_available, parent_probability = nil)
+      def build_node(dataset, attributes_available, depth, parent_probability = nil)
         if(dataset.size < Idhja22::MIN_DATASET_SIZE)
-          return Idhja22::LeafNode.new(parent_probability, dataset.category_label)
+          return Idhja22::LeafNode.new(probability_guess(parent_probability, depth), dataset.category_label)
         end
 
         #if successful termination - create and return a leaf node
@@ -28,7 +28,7 @@ module Idhja22
 
         data_split , best_attribute = best_attribute(dataset, attributes_available)
 
-        node = Idhja22::DecisionNode.new(data_split, best_attribute, attributes_available-[best_attribute], dataset.probability)
+        node = Idhja22::DecisionNode.new(data_split, best_attribute, attributes_available-[best_attribute], depth, dataset.probability)
 
         return node
       end
@@ -52,11 +52,15 @@ module Idhja22
         end
         return data_split, best_attribute
       end
+
+      def probability_guess(parent_probability, depth)
+        return (parent_probability + (0.5-parent_probability)/2**depth)
+      end
     end
 
     def initialize(dataset, attributes_available)
       raise Idhja22::Dataset::InsufficientData, "require at least #{Idhja22::MIN_DATASET_SIZE} data points, only have #{dataset.size} in data set provided" if(dataset.size < Idhja22::MIN_DATASET_SIZE)
-      @root = self.class.build_node(dataset, attributes_available)
+      @root = self.class.build_node(dataset, attributes_available, 0)
     end
 
     def get_rules

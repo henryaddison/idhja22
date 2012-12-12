@@ -7,11 +7,11 @@ module Idhja22
 
   class DecisionNode < Node
     attr_reader :branches, :decision_attribute
-    def initialize(data_split, decision_attribute, attributes_available, parent_probability)
+    def initialize(data_split, decision_attribute, attributes_available, depth, parent_probability)
       @decision_attribute = decision_attribute
       @branches = {}
       data_split.each do |value, dataset|
-        node = Tree.build_node(dataset, attributes_available, parent_probability)
+        node = Tree.build_node(dataset, attributes_available, depth+1, parent_probability)
         @branches[value] = node if node && !(node.is_a?(DecisionNode) && node.branches.empty?)
       end
     end
