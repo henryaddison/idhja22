@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe Idhja22::Dataset::Example do
   before(:all) do
-    @datum = Idhja22::Dataset::Example.new(['high', '20-30', 'tubby','Y'], ['confidence', 'age', 'weight'], 'likes')
+    @datum = Idhja22::Dataset::Example.new(['high', '20-30', 'vanilla','Y'], ['confidence', 'age', 'fav ice cream'], 'likes')
   end
   
   describe 'new' do
     it 'should extract attributes' do
-      @datum.attributes.should == ['high', '20-30', 'tubby']
-      @datum.attribute_labels.should == ['confidence', 'age', 'weight']
+      @datum.attributes.should == ['high', '20-30', 'vanilla']
+      @datum.attribute_labels.should == ['confidence', 'age', 'fav ice cream']
     end
 
     it 'should extract category' do
@@ -19,7 +19,7 @@ describe Idhja22::Dataset::Example do
     context 'with non-unique attribute labels' do
       it 'should throw an exception' do
         expect do
-          Idhja22::Dataset::Example.new(['high', '20-30', 'tubby','Y'], ['confidence', 'age', 'age'], 'likes')
+          Idhja22::Dataset::Example.new(['high', '20-30', 'vanilla','Y'], ['confidence', 'age', 'age'], 'likes')
         end.to raise_error(Idhja22::Dataset::NonUniqueAttributeLabels)
       end
     end
@@ -27,7 +27,7 @@ describe Idhja22::Dataset::Example do
     context 'unexpected label' do
       it 'should raise an exception' do
         expect do
-          Idhja22::Dataset::Example.new(['high', '20-30', 'tubby','H'], ['confidence', 'age', 'weight'], 'likes')
+          Idhja22::Dataset::Example.new(['high', '20-30', 'vanilla','H'], ['confidence', 'age', 'fav ice cream'], 'likes')
         end.to raise_error(Idhja22::Dataset::Example::UnknownCategoryValue)
       end
     end
@@ -35,7 +35,7 @@ describe Idhja22::Dataset::Example do
 
   describe 'to_a' do
     it 'should list the data in an array format' do
-      @datum.to_a.should == ['high', '20-30', 'tubby','Y']
+      @datum.to_a.should == ['high', '20-30', 'vanilla','Y']
     end
   end
 

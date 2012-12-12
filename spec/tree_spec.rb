@@ -13,7 +13,7 @@ describe Idhja22::Tree do
 
     context 'with insufficient data' do
       it 'should throw exception' do
-        ds = Idhja22::Dataset.new([Idhja22::Dataset::Datum.new(['high', '20-30', 'Tubby', 'Y'], ['Confidence', 'Age group', 'Weight'] , 'Loves Brand')], ['Confidence', 'Age group', 'Weight'], 'Loves Brand')
+        ds = Idhja22::Dataset.new([Idhja22::Dataset::Datum.new(['high', '20-30', 'Vanilla', 'Y'], ['Confidence', 'Age group', 'Fav ice cream'] , 'Loves Reading')], ['Confidence', 'Age group', 'Fav ice cream'], 'Loves Reading')
         expect { Idhja22::Tree.train(ds) }.to raise_error(Idhja22::Dataset::InsufficientData)
       end
     end
