@@ -17,7 +17,7 @@ module Idhja22
         end
 
         #if successful termination - create and return a leaf node
-        if(dataset.terminating?)
+        if(dataset.terminating? && depth > 0) # don't terminate without splitting the data at least once
           return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
         end
 
