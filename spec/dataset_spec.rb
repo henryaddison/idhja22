@@ -53,7 +53,7 @@ describe Idhja22::Dataset do
         @ds = Idhja22::Dataset.from_csv(File.join(File.dirname(__FILE__),'large_spec_data.csv'))
       end
 
-      describe 'split' do
+      describe '#split' do
         it 'should split the data set based on the values of an given attribute index' do
           new_sets = @ds.split(0)
           new_sets.length.should == 2
@@ -86,6 +86,14 @@ describe Idhja22::Dataset do
         it 'should calculate entropy of set' do
           @ds.entropy.should be_within(0.000001).of(0.970951)
         end
+
+        context 'with little data' do
+          it 'should return 1' do
+            ds = Idhja22::Dataset.new([Idhja22::Dataset::Example.new(['high', '20-30', 'vanilla', 'Y'], ['Confidence', 'Age group', 'fav ice cream'] , 'Loves Reading')], ['Confidence', 'Age group', 'fav ice cream'], 'Loves Reading')
+            ds.entropy.should == 1.0
+          end
+        end
+
       end
 
       describe 'size' do
