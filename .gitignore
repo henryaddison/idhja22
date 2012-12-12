@@ -22,3 +22,6 @@ doc/
 
 #bundler artifacts
 Gemfile.lock
+
+#OS X files
+.DS_Store
