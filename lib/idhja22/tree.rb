@@ -13,11 +13,7 @@ module Idhja22
 
       def build_node(dataset, attributes_available, parent_probability = nil)
         if(dataset.size < Idhja22::MIN_DATASET_SIZE)
-          if(parent_probability)
-            return Idhja22::LeafNode.new(parent_probability, dataset.category_label)
-          else
-            return nil
-          end
+          return Idhja22::LeafNode.new(parent_probability, dataset.category_label)
         end
 
         #if successful termination - create and return a leaf node
