@@ -1,6 +1,8 @@
 module Idhja22
   class Node
-
+    def ==(other)
+      return self.class == other.class
+    end
   end
 
   class DecisionNode < Node
@@ -26,6 +28,17 @@ module Idhja22
 
       return rules
     end
+
+    def ==(other)
+      return false unless super
+      return false unless self.decision_attribute == other.decision_attribute
+      return false unless self.branches.length == other.branches.length
+      self.branches.each do |attr_value, node|
+        return false unless other.branches.has_key?(attr_value)
+        return false unless node == other.branches[attr_value]
+      end
+      return true
+    end
   end
 
   class LeafNode < Node
@@ -37,6 +50,10 @@ module Idhja22
 
     def get_rules
       ["then chance of #{category_label} = #{probability}"]
+    end
+
+    def ==(other)
+      return super && self.probability == other.probability && self.category_label == other.category_label
     end
   end
 end

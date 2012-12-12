@@ -33,10 +33,6 @@ module Idhja22
         data_split , best_attribute = best_attribute(dataset, attributes_available)
 
         node = Idhja22::DecisionNode.new(data_split, best_attribute, attributes_available-[best_attribute], dataset.probability)
-        #could be that although there's attributes left to split on, we don't get anything useful out, in which case ignore the split and terminate the tree
-        if node.branches.empty?
-          return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
-        end
 
         return node
       end
@@ -69,6 +65,10 @@ module Idhja22
     def get_rules
       rules = root.get_rules
       "if " + rules.join("\nelsif ")
+    end
+
+    def ==(other)
+      return self.root == other.root
     end
 
     def eval datum

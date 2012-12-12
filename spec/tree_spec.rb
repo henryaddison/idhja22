@@ -17,4 +17,15 @@ describe Idhja22::Tree do
       Idhja22::Tree.train(@ds).get_rules.should == "if 2 == a and 4 == a and then chance of C = 1.0\nelsif 2 == a and 4 == b and then chance of C = 0.0\nelsif 2 == b and then chance of C = 0.0"
     end
   end
+
+  describe(' == ') do
+    it 'should compare root nodes' do
+      tree1 = Idhja22::Tree.train(@ds)
+      tree2 = Idhja22::Tree.train(@ds)
+      diff_ds = Idhja22::Dataset.from_csv(File.join(File.dirname(__FILE__),'another_large_spec_data.csv'))
+      diff_tree = Idhja22::Tree.train(diff_ds)
+      tree1.should == tree2
+      tree1.should_not == diff_tree
+    end
+  end
 end

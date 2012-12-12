@@ -15,6 +15,18 @@ describe Idhja22::LeafNode do
       l.get_rules.should == ['then chance of pudding = 0.75']
     end
   end
+
+  describe(' == ') do
+    let(:l1) { Idhja22::LeafNode.new(0.75, 'pudding') }
+    let(:l2) { Idhja22::LeafNode.new(0.75, 'pudding') }
+    let(:diff_l1) { Idhja22::LeafNode.new(0.7, 'pudding') }
+    let(:diff_l2) { Idhja22::LeafNode.new(0.75, 'starter') }
+    it 'should compare attributes' do
+      l1.should == l2
+      l1.should_not == diff_l1
+      l1.should_not == diff_l2
+    end
+  end
 end
 
 describe Idhja22::DecisionNode do
@@ -26,6 +38,19 @@ describe Idhja22::DecisionNode do
     it 'should return a list of rules' do
       l = Idhja22::DecisionNode.new(@ds.split(2), '3', [], 0.75)
       l.get_rules.should == ["3 == a and then chance of C = 0.75", "3 == b and then chance of C = 0.0"]
+    end
+  end
+
+  describe(' == ') do
+    let(:dn1) { Idhja22::DecisionNode.new(@ds.split(2), '2', [], 0.75) }
+    let(:dn2) { Idhja22::DecisionNode.new(@ds.split(2), '2', [], 0.75) }
+    let(:diff_dn1) { Idhja22::DecisionNode.new(@ds.split(0), '2', [], 0.75) }
+    let(:diff_dn2) { Idhja22::DecisionNode.new(@ds.split(3), '3', [], 0.75) }
+
+    it 'should compare ' do
+      dn1.should == dn2
+      dn1.should_not == diff_dn1
+      dn1.should_not == diff_dn2
     end
   end
 end
