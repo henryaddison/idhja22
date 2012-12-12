@@ -28,4 +28,12 @@ describe Idhja22::Tree do
       tree1.should_not == diff_tree
     end
   end
+
+  describe('.train_from_csv') do
+    it 'should make the same tree as the one from the dataset' do
+      tree = Idhja22::Tree.train(@ds)
+      csv_tree = Idhja22::Tree.train_from_csv(File.join(File.dirname(__FILE__),'large_spec_data.csv'))
+      tree.should == csv_tree
+    end
+  end
 end
