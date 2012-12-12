@@ -5,5 +5,5 @@ require "idhja22/node"
 
 module Idhja22
   TERMINATION_PROBABILITY = 0.95
-  MIN_DATASET_SIZE = 10
+  MIN_DATASET_SIZE = 30
 end
