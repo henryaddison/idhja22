@@ -6,7 +6,6 @@ require 'csv'
 module Idhja22
   class Dataset
     attr_reader :category_label, :attribute_labels, :data
-    
 
     include Idhja22::Dataset::TreeMethods
 

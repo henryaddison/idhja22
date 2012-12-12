@@ -29,13 +29,14 @@ module Idhja22
   end
 
   class LeafNode < Node
-    attr_reader :probabilty
-    def initialize(probabilty)
-      @probabilty = probabilty
+    attr_reader :probability, :category_label
+    def initialize(probability, category_label)
+      @probability = probability
+      @category_label = category_label
     end
 
     def get_rules
-      ["then chance of liking = #{probabilty}"]
+      ["then chance of #{category_label} = #{probability}"]
     end
   end
 end
