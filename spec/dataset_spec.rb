@@ -43,7 +43,7 @@ describe Idhja22::Dataset do
         it 'should throw an error' do
           expect do 
             Idhja22::Dataset.new([Idhja22::Dataset::Datum.new(['high', '20-30', 'Tubby', 'Y'], ['Confidence', 'Age group', 'Confidence'] , 'Loves Brand')], ['Confidence', 'Age group', 'Confidence'], 'Loves Brand')
-          end.to raise_error(Idhja22::Dataset::NonUniqueDataLabels)
+          end.to raise_error(Idhja22::Dataset::NonUniqueAttributeLabels)
         end
       end
     end

@@ -2,17 +2,20 @@ require 'csv'
 module Idhja22
   class Dataset
     attr_reader :category_label, :attribute_labels, :data
-    class NonUniqueDataLabels < ArgumentError; end
+    class BadData < ArgumentError; end
+    class NonUniqueAttributeLabels < BadData; end
 
     class Datum
       attr_reader :category, :attributes, :category_label, :attribute_labels
-      class UnknownAttribute < ArgumentError; end
+      class UnknownAttribute < BadData; end
+      class UnknownCategory < BadData; end
 
       def initialize(row, attr_labels, category_label)
         @category_label = category_label
+        raise NonUniqueAttributeLabels, "repeated attributes in #{attr_labels}" unless attr_labels == attr_labels.uniq
         @attribute_labels = attr_labels
         @category = row.pop
-        raise "Unrecognised category: #{@category}" unless ['Y', 'N'].include?(@category)
+        raise UnknownCategory, "Unrecognised category: #{@category}" unless ['Y', 'N'].include?(@category)
         @attributes = row
       end
 
@@ -48,7 +51,7 @@ module Idhja22
 
     def initialize(data, attr_labels, category_label)
       @category_label = category_label
-      raise NonUniqueDataLabels, "repeated attributes in #{attr_labels}" unless attr_labels == attr_labels.uniq
+      raise NonUniqueAttributeLabels, "repeated attributes in #{attr_labels}" unless attr_labels == attr_labels.uniq
       @attribute_labels = attr_labels
       @data = data
     end

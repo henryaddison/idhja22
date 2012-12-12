@@ -15,6 +15,22 @@ describe Idhja22::Dataset::Datum do
       @datum.category.should == 'Y'
       @datum.category_label.should == 'likes'
     end
+
+    context 'with non-unique attribute labels' do
+      it 'should throw an exception' do
+        expect do
+          Idhja22::Dataset::Datum.new(['high', '20-30', 'tubby','Y'], ['confidence', 'age', 'age'], 'likes')
+        end.to raise_error(Idhja22::Dataset::NonUniqueAttributeLabels)
+      end
+    end
+
+    context 'unexpected label' do
+      it 'should raise an exception' do
+        expect do
+          Idhja22::Dataset::Datum.new(['high', '20-30', 'tubby','H'], ['confidence', 'age', 'weight'], 'likes')
+        end.to raise_error(Idhja22::Dataset::Datum::UnknownCategory)
+      end
+    end
   end
 
   describe 'to_a' do
