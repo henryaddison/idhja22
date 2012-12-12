@@ -5,6 +5,8 @@ module Idhja22
 
     class Datum
       attr_reader :category, :attributes, :category_label, :attribute_labels
+      class UnknownAttribute < ArgumentError; end
+
       def initialize(row, attr_labels, category_label)
         @category_label = category_label
         @attribute_labels = attr_labels
@@ -17,6 +19,13 @@ module Idhja22
         attributes+[category]
       end
 
+      def [](attr_label)
+        if index = @attribute_labels.index(attr_label)
+          @attributes[index]
+        else
+          raise UnknownAttribute, "unknown attribute label #{attr_label} in labels #{@attribute_labels.join(', ')}"
+        end
+      end
     end
 
     class << self

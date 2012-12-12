@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe Idhja22::Dataset::Datum do
+  before(:all) do
+    @datum = Idhja22::Dataset::Datum.new(['high', '20-30', 'tubby','Y'], ['confidence', 'age', 'weight'], 'likes')
+  end
+  
   describe 'new' do
-    before(:all) do
-      @datum = Idhja22::Dataset::Datum.new(['high', '20-30', 'tubby','Y'], ['confidence', 'age', 'weight'], 'likes')
-    end
-
     it 'should extract attributes' do
       @datum.attributes.should == ['high', '20-30', 'tubby']
       @datum.attribute_labels.should == ['confidence', 'age', 'weight']
@@ -18,12 +18,26 @@ describe Idhja22::Dataset::Datum do
   end
 
   describe 'to_a' do
-    before(:all) do
-      @datum = Idhja22::Dataset::Datum.new(['high', '20-30', 'tubby','Y'], ['confidence', 'age', 'weight'], 'likes')
-    end
-
     it 'should list the data in an array format' do
       @datum.to_a.should == ['high', '20-30', 'tubby','Y']
     end
+  end
+
+  describe '[]' do
+    context 'known attribute' do
+      it 'should map attribute label to value' do
+        @datum['age'].should == '20-30'
+      end
+    end
+
+    context 'unknown attribute' do
+      it 'should throw an exception' do
+        expect do
+          @datum['madeup']
+        end.to raise_error(Idhja22::Dataset::Datum::UnknownAttribute)
+      end
+    end
+
+
   end
 end
