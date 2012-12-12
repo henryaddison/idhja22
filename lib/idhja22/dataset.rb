@@ -2,6 +2,7 @@ require 'csv'
 module Idhja22
   class Dataset
     attr_reader :category_label, :attribute_labels, :data
+    class NonUniqueDataLabels < ArgumentError; end
 
     class Datum
       attr_reader :category, :attributes, :category_label, :attribute_labels
@@ -47,6 +48,7 @@ module Idhja22
 
     def initialize(data, attr_labels, category_label)
       @category_label = category_label
+      raise NonUniqueDataLabels, "repeated attributes in #{attr_labels}" unless attr_labels == attr_labels.uniq
       @attribute_labels = attr_labels
       @data = data
     end

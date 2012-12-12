@@ -38,6 +38,14 @@ describe Idhja22::Dataset do
         @ds.data.first.attributes.should == ['high', '20-30', 'Tubby']
         @ds.data.first.category.should == 'Y'
       end
+
+      context 'with repeated attribute labels' do
+        it 'should throw an error' do
+          expect do 
+            Idhja22::Dataset.new([Idhja22::Dataset::Datum.new(['high', '20-30', 'Tubby', 'Y'], ['Confidence', 'Age group', 'Confidence'] , 'Loves Brand')], ['Confidence', 'Age group', 'Confidence'], 'Loves Brand')
+          end.to raise_error(Idhja22::Dataset::NonUniqueDataLabels)
+        end
+      end
     end
 
     context 'ready made' do
