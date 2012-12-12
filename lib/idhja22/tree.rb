@@ -54,7 +54,7 @@ module Idhja22
       end
 
       def probability_guess(parent_probability, depth)
-        return (parent_probability + (0.5-parent_probability)/2**depth)
+        return (parent_probability + (Idhja22::DEFAULT_PROBABILITY-parent_probability)/2**depth)
       end
     end
 
