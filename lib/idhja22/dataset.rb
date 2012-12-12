@@ -15,7 +15,7 @@ module Idhja22
         raise NonUniqueAttributeLabels, "repeated attributes in #{attr_labels}" unless attr_labels == attr_labels.uniq
         @attribute_labels = attr_labels
         @category = row.pop
-        raise UnknownCategory, "Unrecognised category: #{@category}" unless ['Y', 'N'].include?(@category)
+        raise UnknownCategory, "Unrecognised category: #{@category} - should be Y or N" unless ['Y', 'N'].include?(@category)
         @attributes = row
       end
 
