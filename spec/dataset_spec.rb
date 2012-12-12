@@ -26,7 +26,7 @@ describe Idhja22::Dataset do
 
     describe 'new' do
       before(:all) do
-        @ds = Idhja22::Dataset.new([Idhja22::Dataset::Datum.new(['high', '20-30', 'Tubby', 'Y'])], ['Confidence', 'Age group', 'Weight'], 'Loves Brand')
+        @ds = Idhja22::Dataset.new([Idhja22::Dataset::Datum.new(['high', '20-30', 'Tubby', 'Y'], ['Confidence', 'Age group', 'Weight'] , 'Loves Brand')], ['Confidence', 'Age group', 'Weight'], 'Loves Brand')
       end
       
       it 'should extract labels' do

@@ -4,8 +4,10 @@ module Idhja22
     attr_reader :category_label, :attribute_labels, :data
 
     class Datum
-      attr_reader :category, :attributes
-      def initialize(row)
+      attr_reader :category, :attributes, :category_label, :attribute_labels
+      def initialize(row, attr_labels, category_label)
+        @category_label = category_label
+        @attribute_labels = attr_labels
         @category = row.pop
         raise "Unrecognised category: #{@category}" unless ['Y', 'N'].include?(@category)
         @attributes = row
@@ -14,6 +16,7 @@ module Idhja22
       def to_a
         attributes+[category]
       end
+
     end
 
     class << self
@@ -26,7 +29,7 @@ module Idhja22
 
         data = []
         csv.each do |row|
-          data << Datum.new(row)
+          data << Datum.new(row, attribute_labels, category_label)
         end
 
         new(data, attribute_labels, category_label)

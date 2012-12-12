@@ -70,5 +70,9 @@ module Idhja22
       rules = root.get_rules
       "if " + rules.join("\nelsif ")
     end
+
+    def eval datum
+      
+    end
   end
 end
