@@ -22,10 +22,10 @@ Or install it yourself as:
 
 Simplest usage is to have a CSV of training data. The final column is treated as the target category value of each entry, the other columns are attributes for each datum. The first row is used as for attribute and target category labels.
 
-tree = Idhja22::Tree.train_from_csv('/path/to/data.csv')
+    > tree = Idhja22::Tree.train_from_csv('/path/to/data.csv')
 
 To print out the rules produced by the tree:
-puts tree.get_rules
+    > puts tree.get_rules
 
 ## Contributing
 
