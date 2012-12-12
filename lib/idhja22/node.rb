@@ -55,5 +55,9 @@ module Idhja22
     def ==(other)
       return super && self.probability == other.probability && self.category_label == other.category_label
     end
+
+    def eval(datum)
+      return probability
+    end
   end
 end

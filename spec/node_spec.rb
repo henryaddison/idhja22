@@ -27,6 +27,15 @@ describe Idhja22::LeafNode do
       l1.should_not == diff_l2
     end
   end
+
+  describe 'eval' do
+    let(:leaf) { Idhja22::LeafNode.new(0.6, 'pudding') }
+    let(:datum) {}
+
+    it 'should return probability' do
+      leaf.eval(datum).should == 0.6
+    end
+  end
 end
 
 describe Idhja22::DecisionNode do
