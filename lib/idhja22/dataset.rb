@@ -19,7 +19,8 @@ module Idhja22
 
         data = []
         csv.each do |row|
-          data << Example.new(row, attribute_labels, category_label)
+          training_example = Example.new(row, attribute_labels, category_label)
+          data << training_example unless training_example.attributes.any? { |a| a.nil? || a.empty? }
         end
 
         new(data, attribute_labels, category_label)
