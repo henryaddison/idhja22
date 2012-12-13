@@ -75,5 +75,18 @@ module Idhja22
     def evaluate query
       @root.evaluate(query)
     end
+
+    def validation(filename)
+      ds = Dataset.from_csv(filename)
+      output = 0
+      ds.data.each do |query|
+        begin
+          prob = evaluate(query)
+          output += (query.category == 'Y' ? prob : 1.0 - prob)
+        rescue Idhja22::Dataset::Datum::UnknownAttributeValue
+        end
+      end
+      return output.to_f/ds.size.to_f
+    end
   end
 end
