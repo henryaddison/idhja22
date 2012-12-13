@@ -56,7 +56,7 @@ module Idhja22
     end
 
     def get_rules
-      ["then chance of #{category_label} = #{probability}"]
+      ["then chance of #{category_label} = #{probability.round(2)}"]
     end
 
     def ==(other)
