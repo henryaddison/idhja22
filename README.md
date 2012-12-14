@@ -1,5 +1,7 @@
 # Idhja22
 
+[![Build Status](https://travis-ci.org/henryaddison/idhja22.png?branch=master)](https://travis-ci.org/henryaddison/idhja22)
+
 Mostly my attempt at writing a gem.
 
 Used for training a binary classifying tree (target values should be Y or N). Leaf nodes are a probability of Y rather than a Y or N.
