@@ -12,6 +12,12 @@ module Idhja22
       @branches = {}
       data_split.each do |value, dataset|
         node = Tree.build_node(dataset, attributes_available, depth+1, parent_probability)
+        if(node.is_a?(DecisionNode) && node.branches.values.all? { |n| n.is_a?(LeafNode) })
+          probs = node.branches.values.collect(&:probability)
+          if(probs.max - probs.min < 0.01)
+            node = LeafNode.new(probs.max, dataset.category_label)
+          end
+        end
         @branches[value] = node if node && !(node.is_a?(DecisionNode) && node.branches.empty?)
       end
     end

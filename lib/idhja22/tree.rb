@@ -21,6 +21,10 @@ module Idhja22
           return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
         end
 
+        if(depth >= 3) # don't let trees get too long
+          return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
+        end
+
         #if we have no more attributes left to split the dataset on, then return a leafnode
         if(attributes_available.empty?)
           return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
