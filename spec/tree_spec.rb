@@ -51,4 +51,13 @@ describe Idhja22::Tree do
       tree.evaluate(query).should == 1.0
     end
   end
+
+  describe '#validate' do
+    it 'should return the average probability that the tree gets the validation examples correct' do
+      tree = Idhja22::Tree.train(@ds)
+      vps = [Idhja22::Dataset::Example.new(['z','z','a','z','a','Y'],['0', '1','2','3','4'],'C')]
+      vps << Idhja22::Dataset::Example.new(['z','z','a','z','a','N'],['0', '1','2','3','4'],'C')
+      tree.validate(Idhja22::Dataset.new(vps, ['0', '1','2','3','4'],'C')).should == 0.5
+    end
+  end
 end

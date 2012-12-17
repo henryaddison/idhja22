@@ -80,13 +80,12 @@ module Idhja22
       @root.evaluate(query)
     end
 
-    def validation(filename)
-      ds = Dataset.from_csv(filename)
+    def validate(ds)
       output = 0
-      ds.data.each do |query|
+      ds.data.each do |validation_point|
         begin
-          prob = evaluate(query)
-          output += (query.category == 'Y' ? prob : 1.0 - prob)
+          prob = evaluate(validation_point)
+          output += (validation_point.category == 'Y' ? prob : 1.0 - prob)
         rescue Idhja22::Dataset::Datum::UnknownAttributeValue
         end
       end
