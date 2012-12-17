@@ -54,5 +54,17 @@ module Idhja22
       category_counts['Y'].to_f/size.to_f
     end
 
+    def split(training_proportion)
+      shuffled_data = data.shuffle
+      cutoff_point = (training_proportion.to_f*size).to_i
+
+      training_data = shuffled_data[0...cutoff_point]
+      validation_data = shuffled_data[cutoff_point...size]
+
+      training_set = self.class.new(training_data, attribute_labels, category_label)
+      validation_set = self.class.new(validation_data, attribute_labels, category_label)
+
+      return training_set, validation_set
+    end
   end
 end

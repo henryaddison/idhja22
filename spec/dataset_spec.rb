@@ -113,6 +113,18 @@ describe Idhja22::Dataset do
           @ds.probability.should be_within(0.0001).of(0.6)
         end
       end
+
+      describe '#split' do
+        it 'should split into a training and validation set according to the given proportion' do
+          ts, vs = @ds.split(0.5)
+          ts.size.should == 5
+          vs.size.should == 5
+
+          ts, vs = @ds.split(0.75)
+          ts.size.should == 7
+          vs.size.should == 3
+        end
+      end
     end
   end
 end
