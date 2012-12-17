@@ -42,8 +42,8 @@ module Idhja22
         data_split = best_attribute = nil
         igain = - Float::INFINITY
 
-        attributes_available.each do |attr|
-          possible_split = dataset.split(dataset.attribute_labels.index(attr))
+        attributes_available.each do |attr_label|
+          possible_split = dataset.partition(attr_label)
           possible_igain = dataset.entropy
           possible_split.each do |value, ds|
             possible_igain -= (ds.size.to_f/dataset.size.to_f)*ds.entropy
@@ -51,7 +51,7 @@ module Idhja22
           if(possible_igain > igain)
             igain = possible_igain
             data_split = possible_split
-            best_attribute = attr
+            best_attribute = attr_label
           end
         end
         return data_split, best_attribute

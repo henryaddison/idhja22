@@ -1,10 +1,10 @@
 module Idhja22
   class Dataset
     module TreeMethods
-      def split(attr_index)
+      def partition(attr_label)
         groups = Hash.new([])
         data.each do |datum|
-          groups[datum.attributes[attr_index]] += [datum]
+          groups[datum[attr_label]] += [datum]
         end
         output = Hash.new
         groups.each do |value, data|

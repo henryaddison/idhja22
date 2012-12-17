@@ -52,16 +52,16 @@ describe Idhja22::DecisionNode do
 
   describe('#get_rules') do
     it 'should return a list of rules' do
-      l = Idhja22::DecisionNode.new(@ds.split(2), '3', [], 0, 0.75)
+      l = Idhja22::DecisionNode.new(@ds.partition('2'), '3', [], 0, 0.75)
       l.get_rules.should == ["3 == a and then chance of C = 0.75", "3 == b and then chance of C = 0.0"]
     end
   end
 
   describe(' == ') do
-    let(:dn1) { Idhja22::DecisionNode.new(@ds.split(2), '2', [], 0, 0.75) }
-    let(:dn2) { Idhja22::DecisionNode.new(@ds.split(2), '2', [], 0, 0.75) }
-    let(:diff_dn1) { Idhja22::DecisionNode.new(@ds.split(0), '2', [], 0, 0.75) }
-    let(:diff_dn2) { Idhja22::DecisionNode.new(@ds.split(3), '3', [], 0, 0.75) }
+    let(:dn1) { Idhja22::DecisionNode.new(@ds.partition('2'), '2', [], 0, 0.75) }
+    let(:dn2) { Idhja22::DecisionNode.new(@ds.partition('2'), '2', [], 0, 0.75) }
+    let(:diff_dn1) { Idhja22::DecisionNode.new(@ds.partition('0'), '2', [], 0, 0.75) }
+    let(:diff_dn2) { Idhja22::DecisionNode.new(@ds.partition('3'), '3', [], 0, 0.75) }
 
     it 'should compare ' do
       dn1.should == dn2
@@ -71,7 +71,7 @@ describe Idhja22::DecisionNode do
   end
 
   describe 'evaluate' do
-    let(:dn) { Idhja22::DecisionNode.new(@ds.split(2), '3', [], 0, 0.75) }
+    let(:dn) { Idhja22::DecisionNode.new(@ds.partition('2'), '3', [], 0, 0.75) }
     it 'should follow node to probability' do
       query = Idhja22::Dataset::Query.new(['a', 'a'], ['3', '4'], 'C')
       dn.evaluate(query).should == 0.75

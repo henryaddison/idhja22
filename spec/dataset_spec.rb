@@ -53,9 +53,9 @@ describe Idhja22::Dataset do
         @ds = Idhja22::Dataset.from_csv(File.join(File.dirname(__FILE__),'large_spec_data.csv'))
       end
 
-      describe '#split' do
+      describe '#partition' do
         it 'should split the data set based on the values of an given attribute index' do
-          new_sets = @ds.split(0)
+          new_sets = @ds.partition('0')
           new_sets.length.should == 2
           new_sets.each do |value, dset|
             dset.data.collect { |d| d.attributes[0] }.uniq.should == [value]
@@ -63,7 +63,7 @@ describe Idhja22::Dataset do
         end
 
         it 'should preserve the data other than splitting it' do
-          new_sets = @ds.split(3)
+          new_sets = @ds.partition('3')
           new_sets.length.should == 3
           new_sets['a'].attribute_labels.should == @ds.attribute_labels
           new_sets['a'].category_label.should == @ds.category_label
@@ -72,7 +72,7 @@ describe Idhja22::Dataset do
 
 
         it 'should produce one item when the values are all the same' do
-          @ds.split(1).length.should == 1
+          @ds.partition('1').length.should == 1
         end
       end
 
