@@ -36,9 +36,5 @@ module Idhja22
         super+[category]
       end
     end
-
-    class Query < Datum
-
-    end
   end
 end
