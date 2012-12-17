@@ -1,3 +1,5 @@
+require "idhja22/tree/node"
+
 module Idhja22
   # The main entry class for a training, viewing and evaluating a decision tree.
   class Tree
