@@ -6,6 +6,13 @@ module Idhja22
         new(dataset, dataset.attribute_labels)
       end
 
+      def train_and_validate(dataset, training_proportion=0.5)
+        training_set, validation_set = dataset.split(training_proportion)
+        tree = self.train(training_set)
+        validation_value = tree.validate(validation_set)
+        return tree, validation_value
+      end
+
       def train_from_csv(filename)
         ds = Dataset.from_csv(filename)
         train(ds)

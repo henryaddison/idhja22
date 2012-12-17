@@ -60,4 +60,12 @@ describe Idhja22::Tree do
       tree.validate(Idhja22::Dataset.new(vps, ['0', '1','2','3','4'],'C')).should == 0.5
     end
   end
+
+  describe '.train_and_validate' do
+    it 'should return a tree and the validation result' do
+      tree, value = Idhja22::Tree.train_and_validate(@ds)
+      tree.is_a?(Idhja22::Tree).should be_true
+      (0..1).include?(value).should be_true
+    end
+  end
 end
