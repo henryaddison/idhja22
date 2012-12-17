@@ -20,7 +20,7 @@ module Idhja22
           return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
         end
 
-        data_split , best_attribute = best_attribute(dataset, attributes_available)
+        data_split, best_attribute = best_attribute(dataset, attributes_available)
 
         node = Idhja22::DecisionNode.new(data_split, best_attribute, attributes_available-[best_attribute], depth, dataset.probability)
 
@@ -51,6 +51,7 @@ module Idhja22
         return (parent_probability + (Idhja22::DEFAULT_PROBABILITY-parent_probability)/2**depth)
       end
     end
+
     def ==(other)
       return self.class == other.class
     end
