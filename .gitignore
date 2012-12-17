@@ -25,3 +25,6 @@ Gemfile.lock
 
 #OS X files
 .DS_Store
+
+# data directory for storing csvs to run the program against
+data
