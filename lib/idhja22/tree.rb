@@ -18,6 +18,11 @@ module Idhja22
         train(ds)
       end
 
+      def train_and_validate_from_csv(filename, training_proportion=0.5)
+        ds = Dataset.from_csv(filename)
+        train_and_validate(ds, training_proportion)
+      end
+
       def build_node(dataset, attributes_available, depth, parent_probability = nil)
         if(dataset.size < Idhja22::MIN_DATASET_SIZE)
           return Idhja22::LeafNode.new(probability_guess(parent_probability, depth), dataset.category_label)
