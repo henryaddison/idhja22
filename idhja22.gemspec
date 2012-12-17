@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
   gem.version       = Idhja22::VERSION
   gem.authors       = ["Henry Addison"]
   gem.description   = %q{Decision Trees}
-  gem.summary       = %q{A different take on decision trees}
+  gem.summary       = %q{A gem for creating decision trees}
   gem.homepage      = "https://github.com/henryaddison/idhja22"
 
   gem.files         = `git ls-files`.split($/)
