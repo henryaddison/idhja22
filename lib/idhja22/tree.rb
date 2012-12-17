@@ -94,6 +94,9 @@ module Idhja22
           prob = evaluate(validation_point)
           output += (validation_point.category == 'Y' ? prob : 1.0 - prob)
         rescue Idhja22::Dataset::Datum::UnknownAttributeValue
+          # if don't recognised the attribute value in the example, then assume the worst:
+          # will never classify this point correctly
+          # equivalent to output += 0 but no point running this
         end
       end
       return output.to_f/ds.size.to_f

@@ -53,11 +53,25 @@ describe Idhja22::Tree do
   end
 
   describe '#validate' do
+    before(:all) do
+      @tree = Idhja22::Tree.train(@ds)
+    end
+
     it 'should return the average probability that the tree gets the validation examples correct' do
-      tree = Idhja22::Tree.train(@ds)
       vps = [Idhja22::Dataset::Example.new(['z','z','a','z','a','Y'],['0', '1','2','3','4'],'C')]
       vps << Idhja22::Dataset::Example.new(['z','z','a','z','a','N'],['0', '1','2','3','4'],'C')
-      tree.validate(Idhja22::Dataset.new(vps, ['0', '1','2','3','4'],'C')).should == 0.5
+      @tree.validate(Idhja22::Dataset.new(vps, ['0', '1','2','3','4'],'C')).should == 0.5
+    end
+
+    context 'against a data point with an unrecognised attribute value' do
+      before(:all) do
+        validation_point = Idhja22::Dataset::Example.new(['z','z','o','z','a','Y'],['0', '1','2','3','4'],'C')
+        @vps = Idhja22::Dataset.new([validation_point], ['0', '1','2','3','4'],'C')
+      end
+
+      it 'should treat a validation example as one it will never get right' do
+        @tree.validate(@vps).should == 0.0
+      end
     end
   end
 
