@@ -1,5 +1,56 @@
 module Idhja22
   class Node
+    class << self
+      def build_node(dataset, attributes_available, depth, parent_probability = nil)
+        if(dataset.size < Idhja22::MIN_DATASET_SIZE)
+          return Idhja22::LeafNode.new(probability_guess(parent_probability, depth), dataset.category_label)
+        end
+
+        #if successful termination - create and return a leaf node
+        if(dataset.terminating? && depth > 0) # don't terminate without splitting the data at least once
+          return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
+        end
+
+        if(depth >= 3) # don't let trees get too long
+          return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
+        end
+
+        #if we have no more attributes left to split the dataset on, then return a leafnode
+        if(attributes_available.empty?)
+          return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
+        end
+
+        data_split , best_attribute = best_attribute(dataset, attributes_available)
+
+        node = Idhja22::DecisionNode.new(data_split, best_attribute, attributes_available-[best_attribute], depth, dataset.probability)
+
+        return node
+      end
+
+      private
+      def best_attribute(dataset, attributes_available)
+        data_split = best_attribute = nil
+        igain = - Float::INFINITY
+
+        attributes_available.each do |attr_label|
+          possible_split = dataset.partition(attr_label)
+          possible_igain = dataset.entropy
+          possible_split.each do |value, ds|
+            possible_igain -= (ds.size.to_f/dataset.size.to_f)*ds.entropy
+          end
+          if(possible_igain > igain)
+            igain = possible_igain
+            data_split = possible_split
+            best_attribute = attr_label
+          end
+        end
+        return data_split, best_attribute
+      end
+
+      def probability_guess(parent_probability, depth)
+        return (parent_probability + (Idhja22::DEFAULT_PROBABILITY-parent_probability)/2**depth)
+      end
+    end
     def ==(other)
       return self.class == other.class
     end
@@ -11,7 +62,7 @@ module Idhja22
       @decision_attribute = decision_attribute
       @branches = {}
       data_split.each do |value, dataset|
-        node = Tree.build_node(dataset, attributes_available, depth+1, parent_probability)
+        node = Node.build_node(dataset, attributes_available, depth+1, parent_probability)
         if(node.is_a?(DecisionNode) && node.branches.values.all? { |n| n.is_a?(LeafNode) })
           probs = node.branches.values.collect(&:probability)
           if(probs.max - probs.min < 0.01)
