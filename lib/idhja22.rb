@@ -3,6 +3,7 @@ require 'idhja22/config/default'
 
 require "idhja22/version"
 require "idhja22/dataset"
+require "idhja22/binary_classifier"
 require "idhja22/tree"
 require "idhja22/bayes"
 

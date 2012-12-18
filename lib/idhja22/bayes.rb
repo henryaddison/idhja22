@@ -1,5 +1,5 @@
 module Idhja22
-  class Bayes
+  class Bayes < BinaryClassifier
     attr_accessor :conditional_probabilities, :prior_probabilities
     class << self
       def train dataset, attribute_labels_to_use
