@@ -14,11 +14,11 @@ module Idhja22
         conditional_probabilities = {}
         attribute_labels_to_use.each do |attr_label|
           conditional_probabilities[attr_label] = {}
-          partitioned_data = dataset.partition(attr_label)
-          partitioned_data.each do |attr_value, ds|
-            conditional_probabilities[attr_label][attr_value] = Hash.new(0)
-            ds.partition_by_category.each do |cat, uniform_ds|
-              conditional_probabilities[attr_label][attr_value][cat] = uniform_ds.size.to_f/ds.size.to_f
+          dataset.partition_by_category.each do |cat, uniform_category_ds|
+            conditional_probabilities[attr_label][cat] = Hash.new(0)
+            partitioned_data = uniform_category_ds.partition(attr_label)
+            partitioned_data.each do |attr_value, uniform_value_ds|
+              conditional_probabilities[attr_label][cat][attr_value] = uniform_value_ds.size.to_f/uniform_category_ds.size.to_f
             end
           end
         end
@@ -35,5 +35,21 @@ module Idhja22
       end
     end
 
+    def evaluate(query)
+      nb_values = {}
+      total_values = 0
+
+      prior_probabilities.each do |cat, prior_prob|
+        nb_value = prior_prob
+        conditional_probabilities.each do |attr_label, probs|
+          raise Idhja22::Dataset::Datum::UnknownAttributeValue, "Not seen value #{query[attr_label]} for attribute #{attr_label} in training." unless cond_prob = probs[cat][query[attr_label]]
+          nb_value *= cond_prob
+        end
+        total_values += nb_value
+        nb_values[cat] = nb_value
+      end
+
+      return nb_values['Y']/total_values
+    end
   end
 end
