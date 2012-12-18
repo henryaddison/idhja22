@@ -2,7 +2,7 @@ module Idhja22
   class Node
     class << self
       def build_node(dataset, attributes_available, depth, parent_probability = nil)
-        if(dataset.size < Idhja22::MIN_DATASET_SIZE)
+        if(dataset.size < Idhja22.config.min_dataset_size)
           return Idhja22::LeafNode.new(probability_guess(parent_probability, depth), dataset.category_label)
         end
 
@@ -48,7 +48,7 @@ module Idhja22
       end
 
       def probability_guess(parent_probability, depth)
-        return (parent_probability + (Idhja22::DEFAULT_PROBABILITY-parent_probability)/2**depth)
+        return (parent_probability + (Idhja22.config.default_probability-parent_probability)/2**depth)
       end
     end
 

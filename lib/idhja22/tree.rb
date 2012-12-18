@@ -36,7 +36,7 @@ module Idhja22
     end
 
     def initialize(dataset, attributes_available)
-      raise Idhja22::Dataset::InsufficientData, "require at least #{Idhja22::MIN_DATASET_SIZE} data points, only have #{dataset.size} in data set provided" if(dataset.size < Idhja22::MIN_DATASET_SIZE)
+      raise Idhja22::Dataset::InsufficientData, "require at least #{Idhja22.config.min_dataset_size} data points, only have #{dataset.size} in data set provided" if(dataset.size < Idhja22.config.min_dataset_size)
       @root = Node.build_node(dataset, attributes_available, 0)
     end
 
