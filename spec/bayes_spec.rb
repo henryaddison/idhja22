@@ -7,7 +7,7 @@ describe Idhja22::Bayes do
 
   describe '.train' do
     it 'should train a classifier from a dataset' do
-      classifier = Idhja22::Bayes.train @ds, %w{0}
+      classifier = Idhja22::Bayes.train @ds, :attributes => %w{0}
       cond_probs = classifier.conditional_probabilities
       cond_probs.keys.should == ['0']
       
@@ -106,7 +106,7 @@ describe Idhja22::Bayes do
 
   describe '#validate' do
     before(:all) do
-      @bayes = Idhja22::Bayes.train(@ds, @ds.attribute_labels)
+      @bayes = Idhja22::Bayes.train(@ds)
     end
 
     it 'should return the average probability that the tree gets the validation examples correct' do

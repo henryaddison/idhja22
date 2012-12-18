@@ -2,14 +2,6 @@ module Idhja22
   class Bayes < BinaryClassifier
     attr_accessor :conditional_probabilities, :prior_probabilities
     class << self
-      def train dataset, attribute_labels_to_use
-        classifier = new
-        classifier.conditional_probabilities = calculate_conditional_probabilities(dataset, attribute_labels_to_use)
-        classifier.prior_probabilities = calculate_priors(dataset)
-
-        return classifier
-      end
-
       def calculate_conditional_probabilities dataset, attribute_labels_to_use
         conditional_probabilities = {}
         attribute_labels_to_use.each do |attr_label|
@@ -50,6 +42,12 @@ module Idhja22
       end
 
       return nb_values['Y']/total_values
+    end
+
+    def train(dataset, attributes_to_use)
+      self.conditional_probabilities = self.class.calculate_conditional_probabilities(dataset, attributes_to_use)
+      self.prior_probabilities = self.class.calculate_priors(dataset)
+      return self
     end
   end
 end
