@@ -36,7 +36,7 @@ module Idhja22
 
     def category_counts
       counts = Hash.new(0)
-      split_data = category_split
+      split_data = partition_by_category
       split_data.each do |cat, d|
         counts[cat] = d.size
       end
@@ -74,7 +74,7 @@ module Idhja22
       self.data << example
     end
 
-    def category_split
+    def partition_by_category
       output = Hash.new do |hash, key|
         hash[key] = self.class.new([], attribute_labels, category_label)
       end

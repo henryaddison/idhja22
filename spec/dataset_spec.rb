@@ -126,9 +126,9 @@ describe Idhja22::Dataset do
         end
       end
 
-      describe '#category_split' do
+      describe '#partition_by_category' do
         it 'should divide the data set into a set of all Ys and a set of all Ns' do
-          sets = @ds.category_split
+          sets = @ds.partition_by_category
           sets.length.should == 2
           sets['Y'].data.collect(&:category).uniq.should == ['Y']
           sets['N'].data.collect(&:category).uniq.should == ['N']
