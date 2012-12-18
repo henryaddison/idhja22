@@ -17,13 +17,13 @@ module Idhja22
         category_label = labels.pop
         attribute_labels = labels
 
-        data = []
+        set = new([], attribute_labels, category_label)
         csv.each do |row|
           training_example = Example.new(row, attribute_labels, category_label)
-          data << training_example
+          set << training_example
         end
 
-        new(data, attribute_labels, category_label)
+        return set
       end
     end
 
@@ -36,8 +36,9 @@ module Idhja22
 
     def category_counts
       counts = Hash.new(0)
-      data.each do |d|
-        counts[d.category]+=1
+      split_data = category_split
+      split_data.each do |cat, d|
+        counts[cat] = d.size
       end
       return counts
     end
@@ -65,6 +66,22 @@ module Idhja22
       validation_set = self.class.new(validation_data, attribute_labels, category_label)
 
       return training_set, validation_set
+    end
+
+    def <<(example)
+      raise Idhja22::Dataset::Datum::UnknownCategoryLabel unless example.category_label == self.category_label
+      raise Idhja22::Dataset::Datum::UnknownAttributeLabel unless example.attribute_labels == self.attribute_labels
+      self.data << example
+    end
+
+    def category_split
+      output = Hash.new do |hash, key|
+        hash[key] = self.class.new([], attribute_labels, category_label)
+      end
+      self.data.each do |d|
+        output[d.category] << d
+      end
+      return output
     end
   end
 end

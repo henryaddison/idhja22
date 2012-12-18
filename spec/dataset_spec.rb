@@ -125,6 +125,53 @@ describe Idhja22::Dataset do
           vs.size.should == 3
         end
       end
+
+      describe '#category_split' do
+        it 'should divide the data set into a set of all Ys and a set of all Ns' do
+          sets = @ds.category_split
+          sets.length.should == 2
+          sets['Y'].data.collect(&:category).uniq.should == ['Y']
+          sets['N'].data.collect(&:category).uniq.should == ['N']
+        end
+      end
+
+      describe '#<<' do
+        it 'should all datum to list of data' do
+          added_datum = Idhja22::Dataset::Example.new(['a','b','c','d','e', 'Y'],['0','1','2','3','4'],'C')
+          expect { @ds << added_datum}.to change(@ds, :size)
+          @ds.data.last.should == added_datum
+        end
+
+        context 'mismatched category label' do
+          it 'should throw an error' do
+            added_datum = Idhja22::Dataset::Example.new(['a','b','c','d','e', 'Y'],['0','1','2','3','4'],'D')
+            expect { @ds << added_datum}.to raise_error(Idhja22::Dataset::Datum::UnknownCategoryLabel)
+          end
+        end
+
+        context 'mismatching attributes' do
+          context 'extra attribute' do
+            it 'should throw an error' do
+              added_datum = Idhja22::Dataset::Example.new(['a','b','c','d','e', 'f', 'Y'],['0','1','2','3','4', '5'],'C')
+              expect { @ds << added_datum}.to raise_error(Idhja22::Dataset::Datum::UnknownAttributeLabel)
+            end
+          end
+
+          context 'missing attribute' do
+            it 'should throw an error' do
+              added_datum = Idhja22::Dataset::Example.new(['a','b','c','d', 'Y'],['0','1','2','3'],'C')
+              expect { @ds << added_datum}.to raise_error(Idhja22::Dataset::Datum::UnknownAttributeLabel)
+            end
+          end
+
+          context 'different attribute' do
+            it 'should throw an error' do
+              added_datum = Idhja22::Dataset::Example.new(['a','b','c','d', 'e', 'Y'],['0','1','2','3','9'],'C')
+              expect { @ds << added_datum}.to raise_error(Idhja22::Dataset::Datum::UnknownAttributeLabel)
+            end
+          end
+        end
+      end
     end
   end
 end
