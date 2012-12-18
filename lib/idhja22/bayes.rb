@@ -34,8 +34,8 @@ module Idhja22
       prior_probabilities.each do |cat, prior_prob|
         nb_value = prior_prob
         conditional_probabilities.each do |attr_label, probs|
-          raise Idhja22::Dataset::Datum::UnknownAttributeValue, "Not seen value #{query[attr_label]} for attribute #{attr_label} in training." unless cond_prob = probs[cat][query[attr_label]]
-          nb_value *= cond_prob
+          raise Idhja22::Dataset::Datum::UnknownAttributeValue, "Not seen value #{query[attr_label]} for attribute #{attr_label} in training." unless probs[cat].has_key? query[attr_label]
+          nb_value *= probs[cat][query[attr_label]]
         end
         total_values += nb_value
         nb_values[cat] = nb_value
