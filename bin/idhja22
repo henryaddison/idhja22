@@ -4,12 +4,20 @@ require 'thor'
 require 'idhja22'
 
 class TrainAndValidate < Thor
-  desc "train_and_validate FILE", "train a tree for the given file and validate is against a validation set"
+  desc "train_and_validate_tree FILE", "train a tree for the given file and validate is against a validation set"
   method_option :attributes, :type => :array
   method_option :"training-proportion", :type => :numeric, :default => 1.0, :aliases => 't'
-  def train_and_validate(filename)
+  def train_and_validate_tree(filename)
     t, v = Idhja22::Tree.train_and_validate_from_csv(filename, options)
     puts t.get_rules
+    puts "Against validation set probability of successful classifiction: #{v}" if options[:"training-proportion"] < 1.0
+  end
+
+  desc "train_and_validate_bayes FILE", "train a naive Bayesian classifier for the given file and validate is against a validation set"
+  method_option :attributes, :type => :array
+  method_option :"training-proportion", :type => :numeric, :default => 1.0, :aliases => 't'
+  def train_and_validate_bayes(filename)
+    t, v = Idhja22::Bayes.train_and_validate_from_csv(filename, options)
     puts "Against validation set probability of successful classifiction: #{v}" if options[:"training-proportion"] < 1.0
   end
 end
