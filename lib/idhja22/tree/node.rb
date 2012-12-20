@@ -116,18 +116,19 @@ module Idhja22
 
     def cleanup_children!
       branches.each do |attr, child_node|
-        probs = child_node.outputs
+        leaves = child_node.leaves
+        probs = leaves.collect(&:probability)
         if(probs.max - probs.min < Idhja22.config.probability_delta)
-          new_node = LeafNode.new(probs.max, 'Unknown')
+          new_node = LeafNode.new(probs.max, leaves.first.category_label)
           add_branch(attr, new_node)
         end
       end
     end
 
-    def outputs
+    def leaves
       raise Idhja22::IncompleteTree, "decision node with no branches" if branches.empty?
       branches.values.flat_map do |child_node|
-        child_node.outputs
+        child_node.leaves
       end
     end
   end
@@ -152,8 +153,8 @@ module Idhja22
       return probability
     end
 
-    def outputs
-      return [self.probability]
+    def leaves
+      return [self]
     end
   end
 end

@@ -18,9 +18,9 @@ describe Idhja22::DecisionNode do
     end
   end
 
-  describe '#outputs' do
+  describe '#leaves' do
     it 'should return a list of terminating values' do
-      @simple_decision_node.outputs.should == [0.75, 0]
+      @simple_decision_node.leaves.should == [Idhja22::LeafNode.new(0.75, 'C'), Idhja22::LeafNode.new(0.0, 'C')]
     end
 
     context 'a branch without a terminating leaf node' do
@@ -29,7 +29,7 @@ describe Idhja22::DecisionNode do
         decision_node.add_branch('1', Idhja22::LeafNode.new(0.75, 'C'))
         decision_node.add_branch('2', Idhja22::DecisionNode.new('b'))
 
-        expect { decision_node.outputs }.to raise_error(Idhja22::IncompleteTree)
+        expect { decision_node.leaves }.to raise_error(Idhja22::IncompleteTree)
       end
     end
   end
@@ -116,7 +116,7 @@ describe Idhja22::DecisionNode do
       end
       it 'should merge any subnodes with same output into a single leafnode' do
         @dn.cleanup_children!
-        @dn.branches['1'].should == Idhja22::LeafNode.new(0.505, 'Unknown')
+        @dn.branches['1'].should == Idhja22::LeafNode.new(0.505, 'Category')
       end
     end
 
@@ -135,7 +135,7 @@ describe Idhja22::DecisionNode do
 
       it 'should merge nodes recusively' do
         @dn.cleanup_children!
-        @dn.branches['1'].should == Idhja22::LeafNode.new(0.50, 'Unknown')
+        @dn.branches['1'].should == Idhja22::LeafNode.new(0.50, 'Category')
       end
     end
   end

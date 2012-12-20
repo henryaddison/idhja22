@@ -44,10 +44,10 @@ describe Idhja22::LeafNode do
     end
   end
 
-  describe '#outputs' do
-    it 'should return the associated probability' do
+  describe '#leaves' do
+    it 'should return self' do
       leaf = Idhja22::LeafNode.new(0.6, 'pudding')
-      leaf.outputs.should == [0.6]
+      leaf.leaves.should == [leaf]
     end
   end
 end
