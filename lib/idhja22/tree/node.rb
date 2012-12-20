@@ -139,5 +139,9 @@ module Idhja22
       raise Idhja22::Dataset::Datum::UnknownCategoryLabel, "expected category label for query is #{query.category_label} but node is using #{self.category_label}" unless query.category_label == self.category_label
       return probability
     end
+
+    def outputs
+      return [self.probability]
+    end
   end
 end
