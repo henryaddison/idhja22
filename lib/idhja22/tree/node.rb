@@ -3,24 +3,24 @@ module Idhja22
     class << self
       def build_node(dataset, attributes_available, depth, parent_probability = nil)
         if(dataset.size < Idhja22.config.min_dataset_size)
-          return Idhja22::LeafNode.new(probability_guess(parent_probability, depth), dataset.category_label)
+          return Idhja22::LeafNode.new(dataset.m_estimate(parent_probability), dataset.category_label)
         end
 
         #if successful termination - create and return a leaf node
         if(dataset.terminating? && depth > 0) # don't terminate without splitting the data at least once
-          return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
+          return Idhja22::LeafNode.new(dataset.m_estimate(parent_probability), dataset.category_label)
         end
 
         if(depth >= 3) # don't let trees get too long
-          return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
+          return Idhja22::LeafNode.new(dataset.m_estimate(parent_probability), dataset.category_label)
         end
 
         #if we have no more attributes left to split the dataset on, then return a leafnode
         if(attributes_available.empty?)
-          return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
+          return Idhja22::LeafNode.new(dataset.m_estimate(parent_probability), dataset.category_label)
         end
 
-        node = DecisionNode.build(dataset, attributes_available, depth)
+        node = DecisionNode.build(dataset, attributes_available, depth, dataset.m_estimate(parent_probability))
 
         return node
       end
@@ -44,10 +44,6 @@ module Idhja22
         end
         return data_split, best_attribute
       end
-
-      def probability_guess(parent_probability, depth)
-        return (parent_probability + (Idhja22.config.default_probability-parent_probability)/2**depth)
-      end
     end
 
     def ==(other)
@@ -59,13 +55,13 @@ module Idhja22
     attr_reader :branches, :decision_attribute
 
     class << self
-      def build(dataset, attributes_available, depth)
+      def build(dataset, attributes_available, depth, parent_probability=nil)
         data_split, best_attribute = best_attribute(dataset, attributes_available)
 
         output_node = new(best_attribute)
 
         data_split.each do |value, dataset|
-          node = Node.build_node(dataset, attributes_available-[best_attribute], depth+1, dataset.probability)
+          node = Node.build_node(dataset, attributes_available-[best_attribute], depth+1, dataset.m_estimate(parent_probability))
           
           output_node.add_branch(value, node) if node && !(node.is_a?(DecisionNode) && node.branches.empty?)
         end
