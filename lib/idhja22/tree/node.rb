@@ -52,13 +52,13 @@ module Idhja22
   end
 
   class DecisionNode < Node
-    attr_reader :branches, :decision_attribute
+    attr_accessor :branches, :decision_attribute, :default_probability
 
     class << self
       def build(dataset, attributes_available, depth, parent_probability=nil)
         data_split, best_attribute = best_attribute(dataset, attributes_available)
 
-        output_node = new(best_attribute)
+        output_node = new(best_attribute, parent_probability)
 
         data_split.each do |value, dataset|
           node = Node.build_node(dataset, attributes_available-[best_attribute], depth+1, dataset.m_estimate(parent_probability))
@@ -72,9 +72,10 @@ module Idhja22
       end
     end
 
-    def initialize(decision_attribute)
+    def initialize(decision_attribute, default_probability = nil)
       @decision_attribute = decision_attribute
       @branches = {}
+      @default_probability = default_probability
     end
 
     def add_branch(attr_value, node)

@@ -202,4 +202,13 @@ describe Idhja22::DecisionNode do
       end
     end
   end
+
+  describe '.new' do
+    it 'should set instance variables' do
+      dn = Idhja22::DecisionNode.new('attr_label', 0.7)
+      dn.decision_attribute.should == 'attr_label'
+      dn.default_probability.should == 0.7
+      dn.branches.should == {}
+    end
+  end
 end
