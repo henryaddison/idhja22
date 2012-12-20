@@ -107,6 +107,12 @@ describe Idhja22::DecisionNode do
       node.decision_attribute.should == "2"
       node.branches.keys.should == ['a','b']
     end
+
+    it 'should cleanup matching tails' do
+      ds = Idhja22::Dataset.from_csv(File.join(data_dir,'evenly_split.csv'))
+      node = Idhja22::DecisionNode.build(ds, ds.attribute_labels, 0)
+      node.get_rules.should == ['1 == a and then chance of C = 0.5', '1 == b and then chance of C = 0.5']
+    end
   end
 
   describe '#add_branch' do

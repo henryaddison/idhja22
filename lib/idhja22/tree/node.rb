@@ -70,6 +70,8 @@ module Idhja22
           output_node.add_branch(value, node) if node && !(node.is_a?(DecisionNode) && node.branches.empty?)
         end
 
+        output_node.cleanup_children!
+
         return output_node
       end
     end
