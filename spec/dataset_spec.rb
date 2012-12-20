@@ -114,6 +114,18 @@ describe Idhja22::Dataset do
         end
       end
 
+      describe '#m_estimate' do
+        it 'should return an estimate for the probability of category being Y' do
+          @ds.m_estimate(0.5).should be_within(0.0001).of(0.55)
+        end
+
+        context 'nil prior' do
+          it 'should use the default prior' do
+            @ds.m_estimate(nil).should be_within(0.0001).of(0.55)
+          end
+        end
+      end
+
       describe '#split' do
         it 'should split into a training and validation set according to the given proportion' do
           ts, vs = @ds.split(0.5)

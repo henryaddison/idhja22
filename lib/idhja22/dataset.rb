@@ -55,6 +55,11 @@ module Idhja22
       category_counts['Y'].to_f/size.to_f
     end
 
+    def m_estimate(prior)
+      prior ||= Idhja22.config.default_probability
+      (category_counts['Y'] + (prior*Idhja22.config.equivalent_sample_size)).to_f/(size+Idhja22.config.equivalent_sample_size).to_f
+    end
+
     def split(training_proportion)
       shuffled_data = data.shuffle
       cutoff_point = (training_proportion.to_f*size).to_i
