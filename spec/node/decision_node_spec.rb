@@ -94,9 +94,9 @@ describe Idhja22::DecisionNode do
     end
 
     context 'unknown attribute value' do
-      it 'should raise an error' do
+      it 'should return default probability value' do
         query = Idhja22::Dataset::Datum.new(['c', 'a'], ['3', '4'], 'C')
-        expect {@simple_decision_node.evaluate(query)}.to raise_error(Idhja22::Dataset::Datum::UnknownAttributeValue)
+        @simple_decision_node.evaluate(query).should == 0.5
       end
     end
   end
@@ -209,6 +209,13 @@ describe Idhja22::DecisionNode do
       dn.decision_attribute.should == 'attr_label'
       dn.default_probability.should == 0.7
       dn.branches.should == {}
+    end
+
+    context 'without provided default probability' do
+      it 'should set default to config default' do
+        dn = Idhja22::DecisionNode.new('attr_label')
+        dn.default_probability.should == 0.5
+      end
     end
   end
 end

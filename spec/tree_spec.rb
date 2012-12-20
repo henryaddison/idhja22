@@ -70,7 +70,7 @@ describe Idhja22::Tree do
       end
 
       it 'should treat a validation example as one it will never get right' do
-        @tree.validate(@vps).should == 0.0
+        @tree.validate(@vps).should == 0.55
       end
     end
   end

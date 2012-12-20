@@ -75,7 +75,7 @@ module Idhja22
     def initialize(decision_attribute, default_probability = nil)
       @decision_attribute = decision_attribute
       @branches = {}
-      @default_probability = default_probability
+      @default_probability = (default_probability || Idhja22.config.default_probability)
     end
 
     def add_branch(attr_value, node)
@@ -109,7 +109,7 @@ module Idhja22
     def evaluate(query)
       queried_value = query[self.decision_attribute]
       branch = self.branches[queried_value]
-      raise Idhja22::Dataset::Datum::UnknownAttributeValue, "when looking at attribute labelled #{self.decision_attribute} could not find branch for value #{queried_value}" if branch.nil?
+      return default_probability if branch.nil?
       branch.evaluate(query)
     end
 
