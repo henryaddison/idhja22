@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Idhja22::Tree do
   before(:all) do
-    @ds = Idhja22::Dataset.from_csv(File.join(File.dirname(__FILE__),'large_spec_data.csv'))
+    @ds = Idhja22::Dataset.from_csv(File.join(data_dir,'large_spec_data.csv'))
   end
 
   
@@ -29,7 +29,7 @@ describe Idhja22::Tree do
     it 'should compare root nodes' do
       tree1 = Idhja22::Tree.train(@ds)
       tree2 = Idhja22::Tree.train(@ds)
-      diff_ds = Idhja22::Dataset.from_csv(File.join(File.dirname(__FILE__),'another_large_spec_data.csv'))
+      diff_ds = Idhja22::Dataset.from_csv(File.join(data_dir,'another_large_spec_data.csv'))
       diff_tree = Idhja22::Tree.train(diff_ds)
       tree1.should == tree2
       tree1.should_not == diff_tree
@@ -39,7 +39,7 @@ describe Idhja22::Tree do
   describe('.train_from_csv') do
     it 'should make the same tree as the one from the dataset' do
       tree = Idhja22::Tree.train(@ds)
-      csv_tree = Idhja22::Tree.train_from_csv(File.join(File.dirname(__FILE__),'large_spec_data.csv'))
+      csv_tree = Idhja22::Tree.train_from_csv(File.join(data_dir,'large_spec_data.csv'))
       tree.should == csv_tree
     end
   end
@@ -85,7 +85,7 @@ describe Idhja22::Tree do
 
   describe('.train_and_validate_from_csv') do
     it 'should make the same tree as the one from the dataset' do
-      csv_tree, validation_value = Idhja22::Tree.train_and_validate_from_csv(File.join(File.dirname(__FILE__),'large_spec_data.csv'), :"training-proportion" => 0.75)
+      csv_tree, validation_value = Idhja22::Tree.train_and_validate_from_csv(File.join(data_dir,'large_spec_data.csv'), :"training-proportion" => 0.75)
       csv_tree.is_a?(Idhja22::Tree).should be_true
       (0..1).include?(validation_value).should be_true
     end

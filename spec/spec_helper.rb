@@ -15,6 +15,10 @@ Configuration.for('spec', Idhja22.config) {
 
 Idhja22.configure('spec')
 
+def data_dir
+  File.dirname(__FILE__) + '/data/'
+end
+
 RSpec.configure do |config|
   
 end

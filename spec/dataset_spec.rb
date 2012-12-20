@@ -10,7 +10,7 @@ describe Idhja22::Dataset do
 
     describe 'from_csv' do
       before(:all) do
-        @ds = Idhja22::Dataset.from_csv(File.join(File.dirname(__FILE__),'spec_data.csv'))
+        @ds = Idhja22::Dataset.from_csv(File.join(data_dir,'spec_data.csv'))
       end
 
       it 'should extract labels' do
@@ -50,7 +50,7 @@ describe Idhja22::Dataset do
 
     context 'ready made' do
       before(:all) do
-        @ds = Idhja22::Dataset.from_csv(File.join(File.dirname(__FILE__),'large_spec_data.csv'))
+        @ds = Idhja22::Dataset.from_csv(File.join(data_dir,'large_spec_data.csv'))
       end
 
       describe '#partition' do
