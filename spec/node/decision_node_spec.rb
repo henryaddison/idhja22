@@ -63,6 +63,20 @@ describe Idhja22::DecisionNode do
     end
   end
 
+  describe 'category_label' do
+    it 'should return the category_label from the leaves' do
+      @simple_decision_node.category_label.should == 'C'
+    end
+
+    context 'incomplete node' do
+      it 'should throw an error' do
+        dn = Idhja22::DecisionNode.new('a')
+        expect { dn.category_label }.to raise_error(Idhja22::IncompleteTree)
+      end
+    end
+
+  end
+
   describe 'evaluate' do
     it 'should follow node to probability' do
       query = Idhja22::Dataset::Datum.new(['a', 'a'], ['3', '4'], 'C')

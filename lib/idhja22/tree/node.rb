@@ -131,6 +131,10 @@ module Idhja22
         child_node.leaves
       end
     end
+
+    def category_label
+      leaves.first.category_label
+    end
   end
 
   class LeafNode < Node
