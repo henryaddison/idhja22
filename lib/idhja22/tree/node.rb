@@ -119,7 +119,7 @@ module Idhja22
         leaves = child_node.leaves
         probs = leaves.collect(&:probability)
         if(probs.max - probs.min < Idhja22.config.probability_delta)
-          new_node = LeafNode.new(probs.max, leaves.first.category_label)
+          new_node = LeafNode.new(probs.max, category_label)
           add_branch(attr, new_node)
         end
       end
