@@ -172,22 +172,6 @@ describe Idhja22::Dataset do
           end
         end
       end
-
-      describe '#values' do
-        before(:all) do
-          @ds = Idhja22::Dataset.from_csv(File.join(File.dirname(__FILE__),'large_spec_data.csv'))
-        end
-        it 'should return a list of the attribute values for each label' do
-          values = @ds.values
-          values.should == {
-            '0' => ['a','b'],
-            '1' => ['a'],
-            '2' => ['a','b'],
-            '3' => ['a','b','c'],
-            '4' => ['a', 'b']
-          }
-        end
-      end
     end
   end
 end

@@ -83,16 +83,5 @@ module Idhja22
       end
       return output
     end
-
-    def values
-      output = Hash.new([])
-      attribute_labels.each do |attr_label| 
-        data.each do |d|
-          output[attr_label] += [d[attr_label]] unless output[attr_label].include?(d[attr_label])
-        end
-      end
-
-      return output
-    end
   end
 end
