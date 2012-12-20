@@ -1,4 +1,5 @@
 module Idhja22
+  class IncompleteTree < StandardError; end
   class Dataset
     class BadData < ArgumentError; end
     class InsufficientData < BadData; end

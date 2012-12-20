@@ -18,6 +18,22 @@ describe Idhja22::DecisionNode do
     end
   end
 
+  describe '#outputs' do
+    it 'should return a list of terminating values' do
+      @simple_decision_node.outputs.should == [0.75, 0]
+    end
+
+    context 'a branch without a terminating leaf node' do
+      it 'should throw an error' do
+        decision_node = Idhja22::DecisionNode.new('a')
+        decision_node.add_branch('1', Idhja22::LeafNode.new(0.75, 'C'))
+        decision_node.add_branch('2', Idhja22::DecisionNode.new('b'))
+
+        expect { decision_node.outputs }.to raise_error(Idhja22::IncompleteTree)
+      end
+    end
+  end
+
   describe(' == ') do
     it 'should return false with different decision attributes' do
       dn = Idhja22::DecisionNode.new('2')

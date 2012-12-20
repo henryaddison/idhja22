@@ -118,6 +118,13 @@ module Idhja22
       raise Idhja22::Dataset::Datum::UnknownAttributeValue, "when looking at attribute labelled #{self.decision_attribute} could not find branch for value #{queried_value}" if branch.nil?
       branch.evaluate(query)
     end
+
+    def outputs
+      raise Idhja22::IncompleteTree, "decision node with no branches" if branches.empty?
+      branches.values.flat_map do |child_node|
+        child_node.outputs
+      end
+    end
   end
 
   class LeafNode < Node
