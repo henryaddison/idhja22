@@ -20,9 +20,7 @@ module Idhja22
           return Idhja22::LeafNode.new(dataset.probability, dataset.category_label)
         end
 
-        data_split, best_attribute = best_attribute(dataset, attributes_available)
-
-        node = Idhja22::DecisionNode.new(data_split, best_attribute, attributes_available-[best_attribute], depth, dataset.probability)
+        node = DecisionNode.build(dataset, attributes_available, depth)
 
         return node
       end
@@ -59,19 +57,35 @@ module Idhja22
 
   class DecisionNode < Node
     attr_reader :branches, :decision_attribute
-    def initialize(data_split, decision_attribute, attributes_available, depth, parent_probability)
+
+    class << self
+      def build(dataset, attributes_available, depth)
+        data_split, best_attribute = best_attribute(dataset, attributes_available)
+
+        output_node = new(best_attribute)
+
+        data_split.each do |value, dataset|
+          node = Node.build_node(dataset, attributes_available-[best_attribute], depth+1, dataset.probability)
+          if(node.is_a?(DecisionNode) && node.branches.values.all? { |n| n.is_a?(LeafNode) })
+            probs = node.branches.values.collect(&:probability)
+            if(probs.max - probs.min < 0.01)
+              node = LeafNode.new(probs.max, dataset.category_label)
+            end
+          end
+          output_node.add_branch(value, node) if node && !(node.is_a?(DecisionNode) && node.branches.empty?)
+        end
+
+        return output_node
+      end
+    end
+
+    def initialize(decision_attribute)
       @decision_attribute = decision_attribute
       @branches = {}
-      data_split.each do |value, dataset|
-        node = Node.build_node(dataset, attributes_available, depth+1, parent_probability)
-        if(node.is_a?(DecisionNode) && node.branches.values.all? { |n| n.is_a?(LeafNode) })
-          probs = node.branches.values.collect(&:probability)
-          if(probs.max - probs.min < 0.01)
-            node = LeafNode.new(probs.max, dataset.category_label)
-          end
-        end
-        @branches[value] = node if node && !(node.is_a?(DecisionNode) && node.branches.empty?)
-      end
+    end
+
+    def add_branch(attr_value, node)
+      @branches[attr_value] = node
     end
 
     def get_rules
