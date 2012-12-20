@@ -104,4 +104,39 @@ describe Idhja22::DecisionNode do
       node.branches['value'].should == branch_node
     end
   end
+
+  describe '#cleanup_children!' do
+    context 'with matching output at level below' do
+      before(:all) do
+        @dn = Idhja22::DecisionNode.new('a')
+        @dn_below = Idhja22::DecisionNode.new('b')
+        @dn_below.add_branch('1', Idhja22::LeafNode.new(0.505, 'Category'))
+        @dn_below.add_branch('2', Idhja22::LeafNode.new(0.50, 'Category'))
+        @dn.add_branch('1', @dn_below)
+      end
+      it 'should merge any subnodes with same output into a single leafnode' do
+        @dn.cleanup_children!
+        @dn.branches['1'].should == Idhja22::LeafNode.new(0.505, 'Unknown')
+      end
+    end
+
+    context 'with matching output at two levels below' do
+      before(:all) do
+        @dn = Idhja22::DecisionNode.new('a')
+        @dn_1_below = Idhja22::DecisionNode.new('b')
+        @dn.add_branch('1', @dn_1_below)
+
+        @dn_2_below = Idhja22::DecisionNode.new('c')
+        @dn_1_below.add_branch('1', @dn_2_below)
+
+        @dn_2_below.add_branch('1', Idhja22::LeafNode.new(0.50, 'Category'))
+        @dn_2_below.add_branch('2', Idhja22::LeafNode.new(0.50, 'Category'))
+      end
+
+      it 'should merge nodes recusively' do
+        @dn.cleanup_children!
+        @dn.branches['1'].should == Idhja22::LeafNode.new(0.50, 'Unknown')
+      end
+    end
+  end
 end

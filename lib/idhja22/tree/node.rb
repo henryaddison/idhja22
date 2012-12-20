@@ -66,12 +66,7 @@ module Idhja22
 
         data_split.each do |value, dataset|
           node = Node.build_node(dataset, attributes_available-[best_attribute], depth+1, dataset.probability)
-          if(node.is_a?(DecisionNode) && node.branches.values.all? { |n| n.is_a?(LeafNode) })
-            probs = node.branches.values.collect(&:probability)
-            if(probs.max - probs.min < 0.01)
-              node = LeafNode.new(probs.max, dataset.category_label)
-            end
-          end
+          
           output_node.add_branch(value, node) if node && !(node.is_a?(DecisionNode) && node.branches.empty?)
         end
 
@@ -117,6 +112,16 @@ module Idhja22
       branch = self.branches[queried_value]
       raise Idhja22::Dataset::Datum::UnknownAttributeValue, "when looking at attribute labelled #{self.decision_attribute} could not find branch for value #{queried_value}" if branch.nil?
       branch.evaluate(query)
+    end
+
+    def cleanup_children!
+      branches.each do |attr, child_node|
+        probs = child_node.outputs
+        if(probs.max - probs.min < Idhja22.config.probability_delta)
+          new_node = LeafNode.new(probs.max, 'Unknown')
+          add_branch(attr, new_node)
+        end
+      end
     end
 
     def outputs
