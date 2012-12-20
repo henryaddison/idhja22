@@ -152,5 +152,48 @@ describe Idhja22::DecisionNode do
         @dn.branches['1'].should == Idhja22::LeafNode.new(0.50, 'Category')
       end
     end
+
+    context 'with diverging branches that match internally' do
+      before(:all) do
+        @dn = Idhja22::DecisionNode.new('a')
+
+        dn_1_below = Idhja22::DecisionNode.new('b')
+        @dn.add_branch('1', dn_1_below)
+
+        dn_2_below = Idhja22::DecisionNode.new('c')
+        dn_1_below.add_branch('1', dn_2_below)
+
+        dn_2_below.add_branch('1', Idhja22::LeafNode.new(0.50, 'Category'))
+        dn_2_below.add_branch('2', Idhja22::LeafNode.new(0.50, 'Category'))
+
+        dn_2_below = Idhja22::DecisionNode.new('d')
+        dn_1_below.add_branch('2', dn_2_below)
+
+        dn_2_below.add_branch('1', Idhja22::LeafNode.new(0.70, 'Category'))
+        dn_2_below.add_branch('2', Idhja22::LeafNode.new(0.70, 'Category'))
+      end
+
+      it 'should merge nodes recusively' do
+        @dn.cleanup_children!
+        @dn.branches['1'].branches['1'].should == Idhja22::LeafNode.new(0.50, 'Category')
+        @dn.branches['1'].branches['2'].should == Idhja22::LeafNode.new(0.70, 'Category')
+      end
+    end
+
+    context 'without matching output' do
+      before(:all) do
+        @dn = Idhja22::DecisionNode.new('a')
+        @dn_below = Idhja22::DecisionNode.new('b')
+        @dn_below.add_branch('1', Idhja22::LeafNode.new(0.2, 'Category'))
+        @dn_below.add_branch('2', Idhja22::LeafNode.new(0.70, 'Category'))
+        @dn.add_branch('1', @dn_below)
+      end
+
+      it 'should do nothing' do
+        saved_rules = @dn.get_rules
+        @dn.cleanup_children!
+        @dn.get_rules.should == saved_rules
+      end
+    end
   end
 end

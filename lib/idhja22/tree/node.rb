@@ -116,6 +116,7 @@ module Idhja22
 
     def cleanup_children!
       branches.each do |attr, child_node|
+        child_node.cleanup_children!
         leaves = child_node.leaves
         probs = leaves.collect(&:probability)
         if(probs.max - probs.min < Idhja22.config.probability_delta)
@@ -159,6 +160,11 @@ module Idhja22
 
     def leaves
       return [self]
+    end
+
+    # no-op method - a leaf node has no children by definition
+    def cleanup_children!
+
     end
   end
 end
