@@ -9,11 +9,9 @@ $: << File.dirname(__FILE__) + '/../lib'
 require 'idhja22'
 require 'ruby-debug'
 
-Configuration.for('spec', Idhja22.config) {
+Idhja22.configure do
   min_dataset_size 2
-}
-
-Idhja22.configure('spec')
+end
 
 def data_dir
   File.dirname(__FILE__) + '/data/'
