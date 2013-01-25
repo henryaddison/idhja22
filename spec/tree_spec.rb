@@ -21,7 +21,7 @@ describe Idhja22::Tree do
 
   describe('#get_rules') do
     it 'should list the rules of the tree' do
-      Idhja22::Tree.train(@ds).get_rules.should == "if 2 == a and 4 == a and then chance of C = 0.88\nelsif 2 == a and 4 == b and then chance of C = 0.48\nelsif 2 == b and then chance of C = 0.38"
+      Idhja22::Tree.train(@ds).get_rules.should == "if 2 == a and 4 == a and then chance of C = 0.77\nelsif 2 == a and 4 == b and then chance of C = 0.53\nelsif 2 == b and then chance of C = 0.46"
     end
   end
 
@@ -48,7 +48,7 @@ describe Idhja22::Tree do
     it 'should return the probabilty at the leaf of the tree' do
       tree = Idhja22::Tree.train(@ds)
       query = Idhja22::Dataset::Datum.new(['z','z','a','z','a'],['0', '1','2','3','4'],'C')
-      tree.evaluate(query).should be_within(0.001).of(0.878)
+      tree.evaluate(query).should be_within(0.001).of(0.774)
     end
   end
 

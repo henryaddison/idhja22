@@ -1,26 +1,26 @@
 module Idhja22
   class Node
     class << self
-      def build_node(dataset, attributes_available, depth, parent_probability = nil)
+      def build_node(dataset, attributes_available, depth, prior = nil)
         if(dataset.size < Idhja22.config.min_dataset_size)
-          return Idhja22::LeafNode.new(dataset.m_estimate(parent_probability), dataset.category_label)
+          return Idhja22::LeafNode.build(dataset, prior)
         end
 
         #if successful termination - create and return a leaf node
         if(dataset.terminating? && depth > 0) # don't terminate without splitting the data at least once
-          return Idhja22::LeafNode.new(dataset.m_estimate(parent_probability), dataset.category_label)
+          return Idhja22::LeafNode.build(dataset, prior)
         end
 
         if(depth >= 3) # don't let trees get too long
-          return Idhja22::LeafNode.new(dataset.m_estimate(parent_probability), dataset.category_label)
+          return Idhja22::LeafNode.build(dataset, prior)
         end
 
         #if we have no more attributes left to split the dataset on, then return a leafnode
         if(attributes_available.empty?)
-          return Idhja22::LeafNode.new(dataset.m_estimate(parent_probability), dataset.category_label)
+          return Idhja22::LeafNode.build(dataset, prior)
         end
 
-        node = DecisionNode.build(dataset, attributes_available, depth, dataset.m_estimate(parent_probability))
+        node = DecisionNode.build(dataset, attributes_available, depth, prior)
 
         return node
       end
@@ -55,13 +55,15 @@ module Idhja22
     attr_accessor :branches, :decision_attribute, :default_probability
 
     class << self
-      def build(dataset, attributes_available, depth, parent_probability=nil)
+      def build(dataset, attributes_available, depth, prior=nil)
         data_split, best_attribute = best_attribute(dataset, attributes_available)
 
-        output_node = new(best_attribute, parent_probability)
+        probability_guess = dataset.m_estimate(prior)
 
-        data_split.each do |value, dataset|
-          node = Node.build_node(dataset, attributes_available-[best_attribute], depth+1, dataset.m_estimate(parent_probability))
+        output_node = new(best_attribute, probability_guess)
+
+        data_split.each do |value, ds|
+          node = Node.build_node(ds, attributes_available-[best_attribute], depth+1, probability_guess)
           
           output_node.add_branch(value, node) if node && !(node.is_a?(DecisionNode) && node.branches.empty?)
         end
@@ -139,6 +141,13 @@ module Idhja22
 
   class LeafNode < Node
     attr_reader :probability, :category_label
+    class << self
+      def build(dataset, prior)
+        return new(dataset.m_estimate(prior), dataset.category_label)
+      end
+    end
+
+
     def initialize(probability, category_label)
       @probability = probability
       @category_label = category_label
